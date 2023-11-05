@@ -4,8 +4,9 @@ function Home() {
 
     return (
         <div>
-      <h1>Home, mohamed</h1>
+      <h1>Home, David</h1>
         </div>
+
       
     );
   }
