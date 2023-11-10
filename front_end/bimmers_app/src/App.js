@@ -6,6 +6,8 @@ import Check_in from './views/Check_in';
 import Repair_order from './views/Repair_order';
 import Invoices from './views/Invoices';
 import {Route, Routes} from "react-router-dom"
+import React, {Component} from 'react'
+
 
 function App() {
   return (
@@ -23,5 +25,9 @@ function App() {
    </>
   )
 }
+
+
+
+
 
 export default App;
