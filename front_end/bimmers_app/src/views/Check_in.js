@@ -23,7 +23,8 @@
         PlateNum: '',
         Description1: '',
         Description2: '',
-        Description3: ''
+        Description3: '',
+        VIN_Number: '',
       }
 
     }
@@ -173,6 +174,15 @@
 
     }
 
+    handleVin_Numberchange = (event ) => {
+      this.setState({
+        Description3: event.target.value,
+
+
+          })
+
+    }
+
     handleSubmit = event =>{
         alert(`
         ${this.state.CusFname} ${this.state.CusLname} ${this.state.PhoneNu} 
@@ -188,6 +198,7 @@
 
     render () {
       return (
+        
       <form onSubmit={this.handleSubmit}>
         <h1>Check in</h1>
         <label>Customer Information </label>
@@ -290,6 +301,15 @@
         onChange={this.handlePlateNumchange}
         />
         </div>
+
+        <div>
+      <label>VIN Number: </label>
+        <input 
+        type = "text" value={this.state.VIN_Number} 
+        onChange={this.handleVIN_Numberchange}
+        />
+        </div>
+
         <br></br>
       <label>Repair Description #1: </label>
         <div>

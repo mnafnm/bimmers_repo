@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import axios from 'axios'
-export default Repair_order;
+export default Look_up;
 
-function Repair_order() {
+
+function Look_up() {
   const [Customers, setCustomer] = useState({});
 
   useEffect(()=>{
@@ -12,9 +13,8 @@ function Repair_order() {
     });
   }, []);
     return (
-    <div className="Repair_order">
-      <h1>Repair Orders</h1>
-      <p>{Customers.CUSTOMER_LAST_NAME}</p>
+    <div className="Look_up">
+      <h1>Look_up</h1>
+      <th>{Customers.CUSTOMER_LAST_NAME}</th>
       </div>)
   };
-
