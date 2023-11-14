@@ -1,7 +1,12 @@
 /*export default function About() {
     return <h1>Check in</h1>
   }*/
-  import React, {Component} from 'react'
+  import React, {Component} from 'react';
+  import { useForm } from "react-hook-form";
+
+  const normalizeZipCode = (value) => {
+    return value.replace(/\s/g, "").match(/.{1,4}/g)?.join("").substr(0,5) || ""
+  }
 
   class Check_in extends Component {
 
@@ -21,10 +26,11 @@
         CarYear:'',
         CarColor: '',
         PlateNum: '',
+        VIN_Number: '',
         Description1: '',
         Description2: '',
         Description3: '',
-        VIN_Number: '',
+        
       }
 
     }
@@ -48,9 +54,24 @@
     }
 
 
-    handlePhoneNuchange = (event ) => {
+    handlePhoneNuchange = (e ) => {
+
+      if(!isNaN(e.target.value) && e.target.value.length == 3 )
+      {
+        console.log(e.target.value)
+        document.getElementById("number").value = "(" + e.target.value + ") ";
+      } 
+      else if(e.target.value.length == 9)
+      {
+        var regExp = /[a-zA-Z]/g;
+        if(!regExp.test(e.target.value))
+        {
+          document.getElementById("number").value = e.target.value + "-";
+        }
+      }
+
       this.setState({
-        PhoneNu: event.target.value,
+        PhoneNu: e.target.value,
 
 
           })
@@ -147,6 +168,15 @@
 
     }
 
+    handleVIN_Numberchange = (event ) => {
+      this.setState({
+        VIN_Number: event.target.value,
+
+
+          })
+
+    }
+
     handleDescription1change = (event ) => {
       this.setState({
         Description1: event.target.value,
@@ -174,29 +204,39 @@
 
     }
 
-    handleVin_Numberchange = (event ) => {
-      this.setState({
-        Description3: event.target.value,
-
-
-          })
-
-    }
 
     handleSubmit = event =>{
-        alert(`
-        ${this.state.CusFname} ${this.state.CusLname} ${this.state.PhoneNu} 
-        ${this.state.Street} ${this.state.City} ${this.state.StateName} ${this.state.ZipCode} 
-        ${this.state.CarMake} ${this.state.CarModel} ${this.state.CarYear} ${this.state.CarColor}
+        alert(` 
+        Customer Info:
+        ${this.state.CusFname} 
+        ${this.state.CusLname} 
+        ${this.state.PhoneNu} 
+        ${this.state.Street} 
+        ${this.state.City} 
+        ${this.state.StateName} 
+        ${this.state.ZipCode} 
+       
+       
+        Vehicles Info:
+        ${this.state.CarMake} 
+        ${this.state.CarModel} 
+        ${this.state.CarYear} 
+        ${this.state.CarColor}
         ${this.state.PlateNum}
 
+        Work Details
         ${this.state.Description1}
         ${this.state.Description2}
         ${this.state.Description3}
+        ${this.state.VIN_Number}
         `)
     }
 
+    
+
     render () {
+ 
+
       return (
         
       <form onSubmit={this.handleSubmit}>
@@ -220,7 +260,9 @@
       <div>
       <label>Phone Number: </label>
         <input 
-        type = "text" value={this.state.PhoneNu} 
+        type = "text" 
+        id="number"
+        placeholder='(111) 222-3333'
         onChange={this.handlePhoneNuchange}
         />
         </div>
@@ -254,8 +296,15 @@
         <div>
       <label>Zip Code: </label>
         <input 
-        type = "text" value={this.state.ZipCode} 
-        onChange={this.handleZipCodechange}
+        type = "number" value={this.state.ZipCode} 
+        placeholder='12345'
+        
+        onChange={this.handleZipCodechange} 
+        {...event => { const {value} = event.target
+        event.target.value = normalizeZipCode(value)
+
+
+        }}
         />
         </div>
 
@@ -281,7 +330,8 @@
         <div>
       <label>Year: </label>
         <input 
-        type = "text" value={this.state.CarYear} 
+        type = "number" value={this.state.CarYear}
+        placeholder= '2023'
         onChange={this.handleCarYearchange}
         />
         </div>
