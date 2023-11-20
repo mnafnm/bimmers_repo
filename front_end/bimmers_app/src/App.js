@@ -1,33 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
 import Navbar from './views/Navbar';
 import Home from './views/Home';
-import Check_in from './views/Check_in';
-import Repair_order from './views/Repair_order';
+import RepairOrder from './views/RepairOrder';
 import Invoices from './views/Invoices';
-import {Route, Routes} from "react-router-dom"
-import React, {Component} from 'react'
+import {Route, Routes} from "react-router-dom";
+import React from 'react';
+import CheckIn from './views/CheckIn';
+import LookUp from './views/LookUp';
+
 
 
 function App() {
   return (
    <>
     <Navbar/>
-    <div className='container'>
+    <div className='w-full flex-col justify-center items-center px-10 md:px-40'>
       <Routes>
         <Route path="/" element={<Home/>}/>
-        <Route path="/check_in" element={<Check_in/>}/>
-        <Route path="/repair_order" element={<Repair_order/>}/>
-        <Route path="/invoices" element={<Invoices/>}/>
+        <Route path="/CheckIn" element={<CheckIn/>}/>
+        <Route path="/LookUp" element={<LookUp/>}/>
+        <Route path="/RepairOrder/" element={<RepairOrder/>}/>
+        <Route path="/Invoices" element={<Invoices/>}/>
         
       </Routes>
     </div>
    </>
   )
 }
-
-
-
-
 
 export default App;

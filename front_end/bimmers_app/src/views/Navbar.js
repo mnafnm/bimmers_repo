@@ -7,9 +7,10 @@ export default function Navbar(){
            Bimmers R Us
         </Link>
        <ul>
-        <CustomLink to="/check_in">Check In</CustomLink>
-        <CustomLink to="/repair_order">Repair Orders</CustomLink>
-        <CustomLink to="/invoices">Invoices</CustomLink>
+        <CustomLink to="/CheckIn">Register</CustomLink>
+        <CustomLink to="/LookUp">Look Up</CustomLink>
+        {/* <CustomLink to="/repairOrder">Repair Orders</CustomLink> */}
+        {/* <CustomLink to="/invoices">Invoices</CustomLink> */}
        </ul>
     </nav>
   )
