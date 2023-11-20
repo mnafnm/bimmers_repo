@@ -223,12 +223,13 @@
         ${this.state.CarYear} 
         ${this.state.CarColor}
         ${this.state.PlateNum}
+        ${this.state.VIN_Number}
 
         Work Details
         ${this.state.Description1}
         ${this.state.Description2}
         ${this.state.Description3}
-        ${this.state.VIN_Number}
+        
         `)
     }
 
