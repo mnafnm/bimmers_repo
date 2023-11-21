@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import firebaseapp from '../utils/initfirebase'
-import { getFirestore, collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
 import {
   createColumnHelper,
   flexRender,
@@ -16,16 +16,17 @@ const handleDelete = (data) => {
   const db = getFirestore(firebaseapp);
   console.log(data.Id)
   const deleteData = async () => {
-    try{
+    try {
       await deleteDoc(doc(db, "customers", data.Id))
+      window.location.reload()
     }
-    catch(e){
+    catch (e) {
       console.log("Some Error Occured", e)
     }
   }
   deleteData()
-  window.location.reload()
 }
+
 const LookUp = () => {
 
   const columns = [
@@ -79,17 +80,13 @@ const LookUp = () => {
     }),
     columnHelper.display({
       id: "Description",
-      cell: info => <><Modal value={{
-        Description1: info.row.original.Description1,
-        Description2: info.row.original.Description2,
-        Description3: info.row.original.Description3,
-      }} id={info.row.original.PhoneNu}/></>,
-      header: "Description",
+      cell: info => <><Modal data={info.row.original} saveHandler={saveHandler} setData={setData} /></>,
+      header: "Orders",
     }),
     columnHelper.display({
       id: "goto",
-      cell : info => <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={() => handleClick(info.row.original)}>Go</button>,
-      header : "Invoice"
+      cell: info => <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={() => handleClick(info.row.original)}>Go</button>,
+      header: "Invoice"
     }),
     columnHelper.display({
       id: "Delete",
@@ -99,20 +96,24 @@ const LookUp = () => {
   ]
 
   const navigate = useNavigate()
-  const handleClick = ( props ) => {
+  const handleClick = (props) => {
     // console.log("Hello", dataToSend)
-    navigate("/RepairOrder", {state : props})
+    navigate("/RepairOrder", { state: props })
 
+  }
+  const saveHandler = async (id, descriptions, row) => {
+    const db = getFirestore(firebaseapp);
+    row.Descriptions = descriptions
+    await setDoc(doc(db, "customers", id), row, { merge: true })
   }
 
 
-  
   const [data, setData] = React.useState([])
 
-  
 
 
-  
+
+
 
 
   const [columnFilters, setColumnFilters] = useState('');
@@ -162,10 +163,10 @@ const LookUp = () => {
               class="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
               type="text"
               id="search"
-              placeholder="Search something.." 
+              placeholder="Search something.."
               value={columnFilters}
               onChange={e => setColumnFilters(e.target.value)}
-              />
+            />
           </div>
         </div>
 

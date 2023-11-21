@@ -21,9 +21,7 @@ const CheckIn = () => {
     CarYear:'',
     CarColor: '',
     PlateNum: '',
-    Description1: '',
-    Description2: '',
-    Description3: '',
+    Descriptions: [],
     Id: uuidv4(),
   })
   const [loading, setLoading] = useState(false)
@@ -263,66 +261,7 @@ const CheckIn = () => {
           </div>
         </div>
       </div>
-      <div className="border-b border-gray-900/10 pb-12">
-        <div className="col-span-full pt-11">
-          <label htmlFor="repair1" className="block text-sm font-medium leading-6 text-gray-900">
-            Repair Description #1
-          </label>
-          <div className="mt-2">
-            <textarea
-              id="repair1"
-              name="repair1"
-              rows={3}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              defaultValue={''}
-              onChange={(e) => setData({
-                ...data,
-                  Description1: e.target.value
-              })}
-            />
-          </div>
-          <p className="mt-3 text-sm leading-6 text-gray-600">Write the details of the repair 1</p>
-        </div>
-        <div className="col-span-full pt-11">
-          <label htmlFor="repair2" className="block text-sm font-medium leading-6 text-gray-900">
-            Repair Description #2
-          </label>
-          <div className="mt-2">
-            <textarea
-              id="repair2"
-              name="repair2"
-              rows={3}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              defaultValue={''}
-              onChange={(e) => setData({
-                ...data,
-                  Description2: e.target.value
-              })}
-            />
-          </div>
-          <p className="mt-3 text-sm leading-6 text-gray-600">Write the details of the repair 2</p>
-        </div>
-        <div className="col-span-full pt-11">
-          <label htmlFor="repair3" className="block text-sm font-medium leading-6 text-gray-900">
-            Repair Description #3
-          </label>
-          <div className="mt-2">
-            <textarea
-              id="repair3"
-              name="repair3"
-              rows={3}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              defaultValue={''}
-              onChange={(e) => setData({
-                ...data,
-                  Description3: e.target.value
-              })}
-            />
-          </div>
-          <p className="mt-3 text-sm leading-6 text-gray-600">Write the details of the repair 3</p>
-        </div>
-      </div>
-
+      
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
           Cancel
