@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import firebaseapp from '../utils/initfirebase'
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import {
   createColumnHelper,
   flexRender,
@@ -12,7 +12,20 @@ import Modal from '../components/modal';
 import { useNavigate } from 'react-router-dom';
 const columnHelper = createColumnHelper()
 
-
+const handleDelete = (data) => {
+  const db = getFirestore(firebaseapp);
+  console.log(data.Id)
+  const deleteData = async () => {
+    try{
+      await deleteDoc(doc(db, "customers", data.Id))
+    }
+    catch(e){
+      console.log("Some Error Occured", e)
+    }
+  }
+  deleteData()
+  window.location.reload()
+}
 const LookUp = () => {
 
   const columns = [
@@ -70,13 +83,18 @@ const LookUp = () => {
         Description1: info.row.original.Description1,
         Description2: info.row.original.Description2,
         Description3: info.row.original.Description3,
-      }} /></>,
+      }} id={info.row.original.PhoneNu}/></>,
       header: "Description",
     }),
     columnHelper.display({
       id: "goto",
       cell : info => <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={() => handleClick(info.row.original)}>Go</button>,
       header : "Invoice"
+    }),
+    columnHelper.display({
+      id: "Delete",
+      cell: info => <button className="bg-transparent hover:bg-red-200 text-red-700 font-semibold hover:text-red-500 py-2 px-4 border border-red-500 hover:border-transparent rounded" onClick={() => handleDelete(info.row.original)}>Delete</button>,
+      header: "Delete",
     })
   ]
 
@@ -89,23 +107,7 @@ const LookUp = () => {
 
 
   
-  const [data, setData] = React.useState([{
-    "CarModel": "",
-    "PhoneNu": "",
-    "StateName": "",
-    "ZipCode": "",
-    "CarColor": "",
-    "CusLname": "doe",
-    "City": "",
-    "Street": "",
-    "CusFname": "john",
-    "CarYear": "",
-    "Description1": "",
-    "Description2": "",
-    "Description3": "",
-    "CarMake": "",
-    "PlateNum": "",
-  }])
+  const [data, setData] = React.useState([])
 
   
 
@@ -114,8 +116,10 @@ const LookUp = () => {
 
 
   const [columnFilters, setColumnFilters] = useState('');
-
+  const [loading, setLoading] = useState(false);
+  console.log(loading)
   useEffect(() => {
+    setLoading(true)
     const db = getFirestore(firebaseapp);
     const docRef = collection(db, "customers");
     const getData = async () => {
@@ -123,7 +127,9 @@ const LookUp = () => {
       setData(data.docs.map(doc => doc.data()))
     }
     getData()
+    setLoading(false)
   }, [])
+  console.log(data)
 
   const table = useReactTable({
     data,
@@ -187,7 +193,7 @@ const LookUp = () => {
 
                 </thead>
                 <tbody>
-                  {table.getRowModel().rows.map(row => (
+                  {loading ? <div className='text-center p-5 animate-pulse'>loading</div> : table.getRowModel().rows.map(row => (
                     <tr key={row.id}>
                       {row.getVisibleCells().map(cell => (
                         <td key={cell.id}>

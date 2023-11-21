@@ -3,7 +3,9 @@
   }*/
 import React, { useState } from 'react'
 import firebaseapp from '../utils/initfirebase'
-import { getFirestore, addDoc, collection } from "firebase/firestore";
+import { getFirestore, addDoc, collection, setDoc, doc } from "firebase/firestore";
+// get uuid
+import { v4 as uuidv4 } from 'uuid';
 
 const CheckIn = () => {
   const [data, setData] = useState({
@@ -22,15 +24,17 @@ const CheckIn = () => {
     Description1: '',
     Description2: '',
     Description3: '',
+    Id: uuidv4(),
   })
   const [loading, setLoading] = useState(false)
   console.log(data)
   async function handleSubmit() {
     setLoading(true)
     const db = getFirestore(firebaseapp)
+    setData({...data, Id: uuidv4()})
     try{
-      const docRef = await addDoc(collection(db, "customers"), data)
-      console.log("Document written with ID: ", docRef.id)
+      await setDoc(doc(db, "customers", data.Id), data)
+      console.log("Document written with ID: ")
     }
     catch(e) {
       console.error("Error adding document: ", e);

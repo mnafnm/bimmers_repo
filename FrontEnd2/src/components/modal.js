@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Modal({value}) {
+export default function Modal({value, id}) {
   const [showModal, setShowModal] = React.useState(false);
   return (
     <>
@@ -43,6 +43,7 @@ export default function Modal({value}) {
                   </p>
                   <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
                     {value.Description3} 
+                    {id}
                   </p>
                 </div>
                 {/*footer*/}

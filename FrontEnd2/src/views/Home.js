@@ -20,7 +20,7 @@ export default function App() {
           right: "dayGridMonth,timeGridWeek,timeGridDay"
         }}
         themeSystem="Simplex"
-        events={events}
+        // events={events}
         plugins={[dayGridPlugin]}
       />
     </div>
