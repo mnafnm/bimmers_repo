@@ -6,6 +6,9 @@ import firebaseapp from '../utils/initfirebase'
 import { getFirestore, addDoc, collection, setDoc, doc } from "firebase/firestore";
 // get uuid
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CheckIn = () => {
   const [data, setData] = useState({
@@ -21,7 +24,7 @@ const CheckIn = () => {
     CarYear:'',
     CarColor: '',
     PlateNum: '',
-    Descriptions: [],
+    Orders: [],
     Id: uuidv4(),
   })
   const [loading, setLoading] = useState(false)
@@ -37,6 +40,7 @@ const CheckIn = () => {
     catch(e) {
       console.error("Error adding document: ", e);
     }
+    toast.success('Customer Added')
     setLoading(false)
   }
 

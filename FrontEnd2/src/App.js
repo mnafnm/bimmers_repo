@@ -7,8 +7,7 @@ import {Route, Routes} from "react-router-dom";
 import React from 'react';
 import CheckIn from './views/CheckIn';
 import LookUp from './views/LookUp';
-
-
+import NewOrder from './views/NewOrder';
 
 function App() {
   return (
@@ -21,7 +20,7 @@ function App() {
         <Route path="/LookUp" element={<LookUp/>}/>
         <Route path="/RepairOrder/" element={<RepairOrder/>}/>
         <Route path="/Invoices" element={<Invoices/>}/>
-        
+        <Route path="/neworder" element={<NewOrder/>}/>
       </Routes>
     </div>
    </>

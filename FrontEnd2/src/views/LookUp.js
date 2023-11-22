@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import firebaseapp from '../utils/initfirebase'
 import { getFirestore, collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   createColumnHelper,
   flexRender,
@@ -28,7 +30,6 @@ const handleDelete = (data) => {
 }
 
 const LookUp = () => {
-
   const columns = [
     columnHelper.accessor('CusFname', {
       header: () => <span>First Name</span>,
@@ -80,31 +81,35 @@ const LookUp = () => {
     }),
     columnHelper.display({
       id: "Description",
-      cell: info => <><Modal data={info.row.original} saveHandler={saveHandler} setData={setData} /></>,
+      cell: info => 
+      <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={()=>{navigate(`../neworder?id=${info.row.original.Id}`, {state: info.row.original})}}>Create new order</button>,
       header: "Orders",
     }),
-    columnHelper.display({
-      id: "goto",
-      cell: info => <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={() => handleClick(info.row.original)}>Go</button>,
-      header: "Invoice"
-    }),
+    // columnHelper.display({
+    //   id: "goto",
+    //   cell: info => <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={() => handleClick(info.row.original)}>Go</button>,
+    //   header: "Invoice"
+    // }),
     columnHelper.display({
       id: "Delete",
       cell: info => <button className="bg-transparent hover:bg-red-200 text-red-700 font-semibold hover:text-red-500 py-2 px-4 border border-red-500 hover:border-transparent rounded" onClick={() => handleDelete(info.row.original)}>Delete</button>,
       header: "Delete",
     })
   ]
+  {/*<Modal data={info.row.original} saveHandler={saveHandler} setData={setData} />*/}
 
   const navigate = useNavigate()
   const handleClick = (props) => {
     // console.log("Hello", dataToSend)
+    toast.success("Data Saved Successfully")
     navigate("/RepairOrder", { state: props })
 
   }
   const saveHandler = async (id, descriptions, row) => {
     const db = getFirestore(firebaseapp);
-    row.Descriptions = descriptions
+    // row.Orders descriptions
     await setDoc(doc(db, "customers", id), row, { merge: true })
+    // window.print();
   }
 
 

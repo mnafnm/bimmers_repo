@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export default function Modal({ data, saveHandler, setData }) {
+export default function Modal({ data, saveHandler, loading }) {
   const [showModal, setShowModal] = React.useState(false);
   const [descriptions, setDescriptions] = React.useState([])
   // console.log(data)
