@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
+import firebaseapp from '../utils/initfirebase'
 const uniqueId = Math.random().toString(36).substr(2, 9);
 const RepairOrder = () => {
 
@@ -14,16 +16,35 @@ const RepairOrder = () => {
   const [tax, setTax] = useState(0)
   const navigate = useNavigate()
 
-  const handleClick = () => {
-
-    navigate("/Invoices", {state : {...data, repair, hours, discount, tax, uniqueId}})
-
+  const date = new Date();
+  const handleClick = async () => {
+    
+    const db = getFirestore(firebaseapp);
+    const price = 125 * hours - discount + tax
+    const ind = new URLSearchParams(window.location.search).get('ind')
+    data.Orders[ind] = {
+      ...data.Orders[ind],
+      Repair: repair,
+      Hours: hours,
+      Price: price,
+      Discount: discount,
+      Tax: tax,
+      Total: price,
+      Date: date
+    }
+    try{
+      await setDoc(doc(db, "customers", data.Id), data)
+      navigate("/Invoices", {state : {...data, repair, hours, discount, tax, uniqueId, date}})
+    }
+    catch(e){
+      console.log("Some Error Occured", e)
+    }
+    
   }
 
   console.log(data)
   console.log(hours)
 
-  const date = new Date();
   return (
 
     <div class="max-w-5xl mx-auto py-16 bg-white">

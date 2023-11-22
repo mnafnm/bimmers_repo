@@ -2,20 +2,20 @@ import React, { useEffect } from "react";
 
 export default function Modal({ data, saveHandler, loading }) {
   const [showModal, setShowModal] = React.useState(false);
-  const [descriptions, setDescriptions] = React.useState([])
+  const [orders, setOrders] = React.useState([])
   // console.log(data)
   useEffect(() => {
-    setDescriptions(data.Descriptions)
+    setOrders(data.Orders)
   }, [data])
   const clickHandler = () => {
-    setDescriptions([
-      ...descriptions,
+    setOrders([
+      ...orders,
       ""
     ])
   }
-  console.log(descriptions)
- 
-  
+  console.log(orders)
+
+
 
   return (
     <>
@@ -50,27 +50,38 @@ export default function Modal({ data, saveHandler, loading }) {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <div className="flex-col">
-                    {descriptions.length>0 ? descriptions.map((description, index) => (
-                      <div className="flex-col flex gap-2" key={index}>
-                        <div className="text-left">Order {index+1} Description:</div>
-                        <textarea className="border-2 rounded-md shadow-sm p-3" value={descriptions[index]} placeholder="Description #1" onChange={(e)=>setDescriptions((prev)=>prev.map((c, i)=>i==index ? e.target.value : c))}  />
-                    </div>
-                    )) : <div>No orders yet.</div>}
-                    <div className="flex justify-end">
-                      <div onClick={clickHandler} className="bg-slate-400 rounded-md cursor-pointer hover:bg-slate-600 py-2 px-4 text-white font-medium w-fit">Add Order</div>
-                    </div>
+                  <div className="divide-y-2">
+                    {
+                      orders.map((order, index) =>
+                        <div>
+                          <div>
+                            Order {index + 1}
+                          </div>
+                          {/* Date: {order && order.Date.toDate().toLocaleDateString()}
+                          {order && order.Date.toDate().toLocaleTimeString()} */}
+                          <br/>
+                          Repair: {order && order.Repair}
+                          <br/>
+                          Hours: {order && order.Hours}
+                          <br/>
+                          Discount: {order && order.Discount}
+                          <br/>
+                          Tax: {order && order.Tax}
+                          <br/>
+                          {order && order.Descriptions.map((item, index) => <div>
+                            Description {index+1}: {item}
+                          </div>
+                          )}
+                          Total: {order && order.Total}
+                          
+                        </div>
+                      )
+                    }
                   </div>
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                <button
-                    className="text-blue-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => saveHandler(data.Id, descriptions, data)}
-                  >
-                    Save
-                  </button>
+
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"

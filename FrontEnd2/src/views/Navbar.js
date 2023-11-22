@@ -9,7 +9,7 @@ export default function Navbar(){
        <ul>
         <CustomLink to="/CheckIn">Register</CustomLink>
         <CustomLink to="/LookUp">Look Up</CustomLink>
-        {/* <CustomLink to="/repairOrder">Repair Orders</CustomLink> */}
+        <CustomLink to="/Orders">Orders</CustomLink>
         {/* <CustomLink to="/invoices">Invoices</CustomLink> */}
        </ul>
     </nav>

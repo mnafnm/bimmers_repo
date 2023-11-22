@@ -8,6 +8,7 @@ import React from 'react';
 import CheckIn from './views/CheckIn';
 import LookUp from './views/LookUp';
 import NewOrder from './views/NewOrder';
+import Orders from './views/Orders';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/CheckIn" element={<CheckIn/>}/>
+        <Route path="/Orders" element={<Orders/>}/>
         <Route path="/LookUp" element={<LookUp/>}/>
         <Route path="/RepairOrder/" element={<RepairOrder/>}/>
         <Route path="/Invoices" element={<Invoices/>}/>
