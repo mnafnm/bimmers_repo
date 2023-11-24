@@ -12,7 +12,7 @@ const NewOrder = () => {
     // console.log(data)
     const [data, setData] = React.useState({});
     const navigate = useNavigate()
-    const handleClick = (data, ind) => {
+    const navigateToRepairOrder = (data, ind) => {
         navigate(`/RepairOrder?ind=${ind}`, { state: data })
 
     }
@@ -53,7 +53,7 @@ const NewOrder = () => {
         catch(e){
             console.log(e)
         }
-        handleClick(data, data.Orders.length - 1)
+        navigateToRepairOrder(data, data.Orders.length - 1)
         setLoading(false)
         // window.print();
       }

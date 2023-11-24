@@ -9,6 +9,7 @@ import CheckIn from './views/CheckIn';
 import LookUp from './views/LookUp';
 import NewOrder from './views/NewOrder';
 import Orders from './views/Orders';
+import CreateInvoice from './views/CreateInvoice';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/CheckIn" element={<CheckIn/>}/>
         <Route path="/Orders" element={<Orders/>}/>
         <Route path="/LookUp" element={<LookUp/>}/>
+        <Route path="/CreateInvoice/" element={<CreateInvoice/>}/>
         <Route path="/RepairOrder/" element={<RepairOrder/>}/>
         <Route path="/Invoices" element={<Invoices/>}/>
         <Route path="/neworder" element={<NewOrder/>}/>

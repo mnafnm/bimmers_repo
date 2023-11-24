@@ -1,13 +1,48 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
-function Invoices() {
+import firebaseapp from '../utils/initfirebase'
+const uniqueId = Math.random().toString(36).substr(2, 9);
+const CreateInvoice = () => {
+
   const location = useLocation()
   const data = location.state
-  console.log(data)
-  const ind = new URLSearchParams(window.location.search).get('ind')
+
+  const [repair, setRepair] = useState('')
+  const [hours, setHours] = useState(0)
+  const [discount, setDiscount] = useState(0)
+  const navigate = useNavigate()
+
   const date = new Date();
+  const handleClick = async () => {
+    
+    const db = getFirestore(firebaseapp);
+    const price = 125 * hours - discount
+    const ind = new URLSearchParams(window.location.search).get('ind')
+    data.Orders[ind] = {
+      ...data.Orders[ind],
+      Repair: repair,
+      Hours: hours,
+      Price: price,
+      Discount: discount,
+      Total: price,
+      Date: date
+    }
+    try{
+      await setDoc(doc(db, "customers", data.Id), data)
+      navigate(`/Invoices?ind=${ind}`, {state : {...data, repair, hours, discount, uniqueId, date}})
+    }
+    catch(e){
+      console.log("Some Error Occured", e)
+    }
+    
+  }
+
+  console.log(data)
+  console.log(hours)
+
   return (
 
     <div class="max-w-5xl mx-auto py-16 bg-white">
@@ -40,7 +75,7 @@ function Invoices() {
                 </div>
                 <div class="text-sm font-light text-slate-500">
                   <p class="text-sm font-normal text-slate-700">Invoice Number</p>
-                  <p>{data.uniqueId}</p  >
+                  <p>{uniqueId}</p>
 
                   <p class="mt-2 text-sm font-normal text-slate-700">
                     Date of Issue
@@ -113,10 +148,19 @@ function Invoices() {
                 <tbody>
                   <tr class="border-b border-slate-200">
                     <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
-                      {data.Orders[ind].Descriptions.map((c) => <div class="font-medium text-slate-700">{c}</div>)}
+                      <div class="font-medium text-slate-700">{data.Description1}</div>
+                      <div class="font-medium text-slate-700">{data.Description2}</div>
+                      <div class="font-medium text-slate-700">{data.Description3}</div>
                     </td>
                     <td class="hidden px-3 py-4 text-sm text-right sm:table-cell">
-                      {data.hours}
+                      <input
+                        type="text"
+                        name="first-name"
+                        id="first-name"
+                        autoComplete="given-name"
+                        className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) => { var val = parseFloat(e.target.value); if (!isNaN(val)) setHours(val) }}
+                      />
                     </td>
                     <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
                       $125.00
@@ -124,7 +168,7 @@ function Invoices() {
                     <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
                       {/* TOTAL  */}
 
-                      ${125 * data.hours}
+                      ${125 * hours}
                     </td>
                   </tr>
                   <tr class="border-b border-slate-200">
@@ -133,7 +177,13 @@ function Invoices() {
 
 
 
-                        {data.repair}
+                        <input
+                          type="text"
+                          name="first-name"
+                          id="first-name"
+                          className="w-full p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => { setRepair(e.target.value) }}
+                        />
 
 
                       </div>
@@ -149,7 +199,7 @@ function Invoices() {
                     </th>
                     <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
-                      ${125 * data.hours}
+                      ${125 * hours}
 
                     </td>
                   </tr>
@@ -159,8 +209,14 @@ function Invoices() {
                     </th>
                     <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
-
-                      ${data.discount}
+                      <input
+                        type="text"
+                        name="first-name"
+                        id="first-name"
+                        autoComplete="given-name"
+                        className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) => { var val = parseFloat(e.target.value); if (!isNaN(val)) setDiscount(val) }}
+                      />
 
                     </td>
                   </tr>
@@ -170,21 +226,21 @@ function Invoices() {
                     </th>
 
                     <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
-                      ${125 * data.hours - data.discount}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={() => window.print()}  >
-                        Print
-                      </button>
-
+                      ${125 * hours - discount}
                     </td>
                   </tr>
                 </tfoot>
               </table>
             </div>
           </div>
+
+<div className='flex justify-end items-end px-7'>
+<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleClick} >
+  Submit Invoice
+</button>
+
+</div>
+         
 
 
           <div class="mt-48 p-9">
@@ -211,7 +267,6 @@ function Invoices() {
   );
 
 
-
 }
 
-export default Invoices
+export default CreateInvoice
