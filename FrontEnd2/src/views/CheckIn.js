@@ -52,14 +52,14 @@ const CheckIn = () => {
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">New Customer</h2>
           <p className="mt-1 text-sm leading-6 text-gray-600">
-            Hello there! We are excited to have you as a new customer. Please fill out the form below to get started.
+            Hello there! Please fill out the form below to register a customer
           </p>
 
         </div>
 
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">Customer Information</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">Enter your personal details here.</p>
+          <p className="mt-1 text-sm leading-6 text-gray-600">Enter customer's details here</p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="sm:col-span-3">

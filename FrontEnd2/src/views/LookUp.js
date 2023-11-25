@@ -41,19 +41,19 @@ const LookUp = () => {
     }),
     columnHelper.accessor('CarModel', {
       cell: info => <i>{info.getValue()}</i>,
-      header: () => <span>Car Model</span>,
+      header: () => <span>Model</span>,
     }),
     columnHelper.accessor('CarMake', {
       cell: info => <i>{info.getValue()}</i>,
-      header: () => <span>Car Make</span>,
+      header: () => <span>Make</span>,
     }),
     columnHelper.accessor('CarYear', {
       cell: info => <i>{info.getValue()}</i>,
-      header: () => <span>Car Year</span>,
+      header: () => <span>Year</span>,
     }),
     columnHelper.accessor('CarColor', {
       cell: info => <i>{info.getValue()}</i>,
-      header: () => <span>Car Color</span>,
+      header: () => <span>Color</span>,
     }),
     columnHelper.accessor('PlateNum', {
       cell: info => <i>{info.getValue()}</i>,

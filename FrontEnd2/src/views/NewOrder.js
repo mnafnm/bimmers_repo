@@ -112,11 +112,13 @@ const NewOrder = () => {
                                         <thead
                                             class="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
                                             <tr>
-                                                <th scope="col" class=" px-6 py-4">Colour</th>
+                                                <th scope="col" class=" px-6 py-4">Color</th>
                                                 <th scope="col" class=" px-6 py-4">Year</th>
-                                                <th scope="col" class=" px-6 py-4">Care Make</th>
-                                                <th scope="col" class=" px-6 py-4">Car Model</th>
+                                                <th scope="col" class=" px-6 py-4">Make</th>
+                                                <th scope="col" class=" px-6 py-4">Model</th>
                                                 <th scope="col" class=" px-6 py-4">Licence</th>
+                                                <th scope="col" class=" px-6 py-4">Mileage</th>
+                                                <th scope="col" class=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -183,15 +185,12 @@ const NewOrder = () => {
                         <div class="border-t pt-9 border-slate-200">
                             <div class="text-sm font-light text-slate-700">
                                 <p>
-                                    Payment terms are 14 days. Please be aware that according to the
-                                    Late Payment of Unwrapped Debts Act 0000, mechanics are
-                                    entitled to claim a 00.00 late fee upon non-payment of debts
-                                    after this time, at which point a new invoice will be submitted
-                                    with the addition of this fee. If payment of the revised invoice
-                                    is not received within a further 14 days, additional interest
-                                    will be charged to the overdue account and a statutory rate of
-                                    8% plus Bank of US base of 0.5%, totalling 8.5%. Parties
-                                    cannot contract out of the Act’s provisions.
+                                I hereby authorize the above repair service to be done along with the necessary material, and hereby grant you/or your employees, permission to operate the car, truck, or vehicle herein described on streets, highways, or elsewhere for the purpose of testing and/or inspection. 
+                                An express mechanic's lien is hereby acknowledged an above car, truck or vehicle to secure the number of repairs thereto. You will not be held responsible for loss or damage to vehicle or articles left in vehicle in case of fire, theft, accident, or any other cause beyond your control. 
+                                In the event legal action is necessary to enforce this contract, I will pay reasonable attorney's fees and court coats.
+                                <div>
+                                AUTHORIZED BY: X ____________________________________________
+                                </div>
                                 </p>
                             </div>
                         </div>
