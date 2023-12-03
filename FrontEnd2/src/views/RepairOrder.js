@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
@@ -14,7 +14,8 @@ const RepairOrder = () => {
     const [recommendedServices, setRecommendedServices] = useState("")
     const navigate = useNavigate()
     const [data, setData] = React.useState({});
-
+    const agreeRef = useRef();
+    // console.log(data)
     useEffect(() => {
         //const db = getFirestore(firebaseapp);
         const serializedObj = location.state?.obj;
@@ -44,18 +45,19 @@ const RepairOrder = () => {
         // }
 
         data.mechanicNotes = mechanicNotes
+        data.agree = agreeRef.current.checked
         data.recommendedServices = recommendedServices
         data.invoiceNumber = Math.floor(Math.random() * 100000) + 1
     
         const postData = {
             order: data,
           };
-console.log(data)
-        const response = await axios.post("http://localhost:4000/saveRepairOrder", postData)
+        console.log(data)
+        // const response = await axios.post("http://localhost:4000/saveRepairOrder", postData)
         navigate('/CreateInvoice', { state: { obj: JSON.stringify(data) } })
 
     }
-console.log(data)
+// console.log(data)
    
 
 
@@ -161,7 +163,7 @@ console.log(data)
                                         <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setMechanicNotes(e.target.value)} />
                                     </div>
                                     <div className='flex flex-col gap-3 text-md font-normal text-slate-700'>
-                                        <div className='text-slate-800'>Recommended services:</div>
+                                        <div className='text-slate-800 flex gap-2 items-center'>Recommended services:  <input ref={agreeRef} type="checkbox" name="agree" id="agree" /> <label htmlFor="agree">I agree</label> </div>
                                         <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setRecommendedServices(e.target.value)} />
                                         
                                     </div>

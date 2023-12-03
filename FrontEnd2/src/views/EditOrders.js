@@ -1,28 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
-
 const uniqueId = Math.random().toString(36).substr(2, 9);
-const CreateInvoice = () => {
+const EditOrders = () => {
 
-  const location = useLocation()
-  const data = JSON.parse(location.state?.obj)
+
+    // get url params
+  const params = useParams();
+  const id = params.id;
+  console.log(id)
+    
   const inputValue = useRef("")
   const [repair, setRepair] = useState([])
 
-  const [order, setOrder] = useState({
-    order_ID: uniqueId,
-    rate: 125,
-    hours: 0,
-    discount: 0,
-    subTotal: 0,
-    discount: 0,
-    total: 0
-  })
+  const [order,setOrder] = useState({})
   const navigate = useNavigate()
 
   const date = new Date();
-
+  useEffect(()=>{
+    const getData = async () => {
+      const response = await fetch(`http://localhost:4000/orders/${id}`)
+      const data = await response.json()
+      console.log(data)
+      setOrder(data[0])
+      setRepair(JSON.parse(data[0].repair_items))
+    }
+    getData()
+  },[id]) 
   const addRepair = async () => {
     const id = inputValue.current.value
     if (id === "") {
@@ -75,7 +79,7 @@ const CreateInvoice = () => {
     if (val === "") val = 0
     setOrder({
       ...order,
-      hours: parseInt(val),
+      hour: parseInt(val),
     })
   }
   const setDiscount = (val) => {
@@ -83,19 +87,19 @@ const CreateInvoice = () => {
     setOrder({
       ...order,
       discount: val,
-      total: parseFloat(order.subTotal - val).toFixed(2)
+      total : parseFloat(order.subTotal - val).toFixed(2)
     })
   }
-  useEffect(() => {
+  useEffect(()=>{
     setOrder({
       ...order,
-      subTotal: parseFloat((order.hours * 125) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0)).toFixed(2),
-      total: parseFloat((order.hours * 125) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0) - order.discount).toFixed(2)
+      subtotal: parseFloat((order.hour * order.rate) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0)).toFixed(2),
+      total : parseFloat((order.hour * order.rate) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0) - order.discount).toFixed(2)
     })
 
-  }, [repair, order.hours])
+  },[repair,order.hour])
 
-  const createInvoice = async () => {
+  const UpdateOrders = async () => {
 
     // create a object with id , name and quantity of each repair
     const repairItems = repair.map((item) => {
@@ -103,35 +107,32 @@ const CreateInvoice = () => {
         OEM_PART_ID: item.OEM_PART_ID,
         OEM_PART_NAME: item.OEM_PART_NAME,
         quantity: item.quantity,
-        OEM_LIST_PRICE: item.OEM_LIST_PRICE
+        OEM_LIST_PRICE : item.OEM_LIST_PRICE
+
       }
     })
     const orderData = {
       ...order,
-      CUSTOMER_ID: data.CUSTOMER_ID,
-      required_services: data.descriptions,
-      repair_items: repairItems,
-      order_date: date,
-      invoice_number: uniqueId,
-      mechanicNotes: data.mechanicNotes,
-      recommendedServices: data.agree ? data.recommendedServices : "",
+      CUSTOMER_ID: order.CUSTOMER_ID,
+      required_services: order.required_services,
+      repair_items:repairItems
     }
-    const res = await fetch(`http://localhost:4000/createOrder`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(orderData)
+    // patch request to update order
+    const response = await fetch(`http://localhost:4000/orders/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData)
     })
-    const response = await res.json()
-    if (response.affectedRows === 1) {
-
-      navigate('/Orders')
+    const data = await response.json()
+    if (data.affectedRows === 1) {
+        alert("Order updated successfully")
+        navigate("/Orders")
     }
-
   }
 
-  console.log("data ", data)
+  // console.log(data)
   // console.log(hours)
   // console.log("Repair ", order)
   return (
@@ -155,10 +156,10 @@ const CreateInvoice = () => {
                   <p class="text-sm font-normal text-slate-700">
                     Invoice Detail:
                   </p>
-                  <p>{data.CUSTOMER_FIRST_NAME} {data.CUSTOMER_LAST_NAME}</p>
-                  <p>{data.CUSTOMER_STREET} {data.CUSTOMER_CITY} {data.CUSTOMER_STATE}</p>
-                  <p>{data.CUSTOMER_ZIPCODE}</p>
-                  <p>{data.CUSTOMER_PRIMARY_PHONE}</p>
+                  <p>{order.CUSTOMER_FIRST_NAME} {order.CUSTOMER_LAST_NAME}</p>
+                  <p>{order.CUSTOMER_STREET} {order.CUSTOMER_CITY} {order.CUSTOMER_STATE}</p>
+                  <p>{order.CUSTOMER_ZIPCODE}</p>
+                  <p>{order.CUSTOMER_PRIMARY_PHONE}</p>
                 </div>
                 <div class="text-sm font-light text-slate-500">
                   <p class="text-sm font-normal text-slate-700">Billed To</p>
@@ -166,12 +167,12 @@ const CreateInvoice = () => {
                 </div>
                 <div class="text-sm font-light text-slate-500">
                   <p class="text-sm font-normal text-slate-700">Invoice Number</p>
-                  <p>{uniqueId}</p>
+                  <p>{order?.invoice_number}</p>
 
                   <p class="mt-2 text-sm font-normal text-slate-700">
                     Date of Issue
                   </p>
-                  <p>{date.getDate()}/{date.getMonth()}/{date.getFullYear()}</p>
+                  <p>{new Date(order.order_date).toDateString()}</p>
                 </div>
 
               </div>
@@ -199,31 +200,32 @@ const CreateInvoice = () => {
                     </thead>
                     <tbody>
                       <tr class="border-b dark:border-neutral-500">
-                        <td class="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
+                        <td class="whitespace-nowrap  px-6 py-4">{order.COLOR}</td>
+                        <td class="whitespace-nowrap  px-6 py-4">{order.PRODUCTION_DATE}</td>
+                        <td class="whitespace-nowrap  px-6 py-4">{order.MAKE}</td>
+                        <td class="whitespace-nowrap  px-6 py-4">{order.MODEL}</td>
+                        <td class="whitespace-nowrap  px-6 py-4">{order.LICENSE_PLATE}</td>
+                        <td class="whitespace-nowrap  px-6 py-4">{order.VIN}</td>
                       </tr>
 
 
                     </tbody>
+
                     <tfoot>
                     <tr>
                       <td>
                       <div className='pt-5'>
                         <strong>Mechanics Note</strong>
-                        <div dangerouslySetInnerHTML={{ __html: data.mechanicNotes }} />
+                        <div dangerouslySetInnerHTML={{ __html: order.mechanicNotes }} />
                         {/* {data.mechanicNotes} */}
                       </div>
                       </td>
                       <td>
-                      {data.agree && 
+                      {order.recommendedServices && 
                         <>
                          <div className='pt-5'>
                          <strong>Recommended Services</strong>
-                        <div dangerouslySetInnerHTML={{ __html: data.recommendedServices }} />
+                        <div dangerouslySetInnerHTML={{ __html: order.recommendedServices }} />
                         {/* {data.mechanicNotes} */}
                       </div>
                         </>
@@ -265,7 +267,8 @@ const CreateInvoice = () => {
                   <tr class="border-b border-slate-200">
                     <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
                       {
-                        data.descriptions && data.descriptions.map((str, index) => (
+                        order.required_services
+                        && JSON.parse(order.required_services).map((str, index) => (
                           <p key={index}>{str}</p>
                         ))
                       }
@@ -274,8 +277,9 @@ const CreateInvoice = () => {
                       <input
                         type="number"
                         min={0}
+                        value={order.hour}
                         className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        onChange={(e) => { handleSetHours(e.target.value) }}
+                        onChange={(e) => {handleSetHours(e.target.value) }}
                       />
                     </td>
                     <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
@@ -284,7 +288,7 @@ const CreateInvoice = () => {
                     <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
                       {/* TOTAL  */}
 
-                      ${order.rate * order.hours}
+                      ${order.rate * order.hour}
                     </td>
                   </tr>
                   {
@@ -342,13 +346,12 @@ const CreateInvoice = () => {
                 </tbody>
                 <tfoot>
                   <tr>
-                  
                     <th scope="row" colSpan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
                       Subtotal
                     </th>
                     <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
-                      ${order.subTotal}
+                      ${order.subtotal}
 
                     </td>
                   </tr>
@@ -361,8 +364,9 @@ const CreateInvoice = () => {
                       <input
                         type="number"
                         min={0}
+                        value={order.discount}
                         className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        onChange={(e) => { setDiscount(e.target.value) }}
+                        onChange={(e) => {setDiscount(e.target.value) }}
                       />
 
                     </td>
@@ -373,7 +377,7 @@ const CreateInvoice = () => {
                     </th>
 
                     <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
-                      ${order.total}
+                      ${order?.total}
                     </td>
                   </tr>
                 </tfoot>
@@ -382,7 +386,7 @@ const CreateInvoice = () => {
           </div>
 
           <div className='flex justify-end items-end px-7'>
-            <button onClick={createInvoice} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
+            <button onClick={UpdateOrders} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
               Submit Invoice
             </button>
 
@@ -408,4 +412,4 @@ const CreateInvoice = () => {
 
 }
 
-export default CreateInvoice
+export default EditOrders

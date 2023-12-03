@@ -62,23 +62,23 @@ const NewOrder = () => {
     
     return (
 
-        <div class="max-w-5xl mx-auto py-16 bg-white">
-            <article class="overflow-hidden">
-                <div class="bg-[white] rounded-b-md">
-                    <div class="p-9">
-                        <div class="space-y-6 text-slate-700">
-                            <img class="object-cover h-12" src={logo} alt="" />
+        <div className="max-w-5xl mx-auto py-16 bg-white">
+            <article className="overflow-hidden">
+                <div className="bg-[white] rounded-b-md">
+                    <div className="p-9">
+                        <div className="space-y-6 text-slate-700">
+                            <img className="object-cover h-12" src={logo} alt="" />
 
-                            <p class="text-xl font-extrabold tracking-tight uppercase font-body">
+                            <p className="text-xl font-extrabold tracking-tight uppercase font-body">
                                 Bimmers R Us
                             </p>
                         </div>
                     </div>
-                    <div class="p-9">
-                        <div class="flex w-full">
-                            <div class="grid grid-cols-4 gap-12">
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">
+                    <div className="p-9">
+                        <div className="flex w-full">
+                            <div className="grid grid-cols-4 gap-12">
+                                <div className="text-sm font-light text-slate-500">
+                                    <p className="text-sm font-normal text-slate-700">
                                         Invoice Detail:
                                     </p>
                                     <p>{data.CUSTOMER_FIRST_NAME} {data.CUSTOMER_LAST_NAME}</p>
@@ -88,15 +88,15 @@ const NewOrder = () => {
                                     <p>{data.VIN}</p>
                                     <p>{data.LICENSE_PLATE}</p>
                                 </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">Billed To</p>
+                                <div className="text-sm font-light text-slate-500">
+                                    <p className="text-sm font-normal text-slate-700">Billed To</p>
                                     <p>Bimmers R Us</p>
                                 </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">Invoice Number</p>
+                                <div className="text-sm font-light text-slate-500">
+                                    <p className="text-sm font-normal text-slate-700">Invoice Number</p>
                                     <p>{uniqueId}</p>
 
-                                    <p class="mt-2 text-sm font-normal text-slate-700">
+                                    <p className="mt-2 text-sm font-normal text-slate-700">
                                         Date of Issue
                                     </p>
                                     <p>{date.getDate()}/{date.getMonth()}/{date.getFullYear()}</p>
@@ -108,30 +108,30 @@ const NewOrder = () => {
 
 
 
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto md:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
-                                <div class="overflow-hidden">
-                                    <table class="min-w-full text-center text-sm font-light">
+                    <div className="flex flex-col">
+                        <div className="overflow-x-auto md:-mx-8">
+                            <div className="inline-block min-w-full py-2 sm:px-6 md:px-8">
+                                <div className="overflow-hidden">
+                                    <table className="min-w-full text-center text-sm font-light">
                                         <thead
-                                            class="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
+                                            className="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
                                             <tr>
-                                                <th scope="col" class=" px-6 py-4">Color</th>
-                                                <th scope="col" class=" px-6 py-4">Year</th>
-                                                <th scope="col" class=" px-6 py-4">Make</th>
-                                                <th scope="col" class=" px-6 py-4">Model</th>
-                                                <th scope="col" class=" px-6 py-4">Licence</th>
-                                                <th scope="col" class=" px-6 py-4">Vin</th>
+                                                <th scope="col" className=" px-6 py-4">Color</th>
+                                                <th scope="col" className=" px-6 py-4">Year</th>
+                                                <th scope="col" className=" px-6 py-4">Make</th>
+                                                <th scope="col" className=" px-6 py-4">Model</th>
+                                                <th scope="col" className=" px-6 py-4">Licence</th>
+                                                <th scope="col" className=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
+                                            <tr className="border-b dark:border-neutral-500">
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
                                             </tr>
 
 
@@ -162,8 +162,8 @@ const NewOrder = () => {
                         </div>
                     </div>
 
-                    <div class="p-9">
-                        <div class="flex flex-col mx-0 mt-8 text-sm font-normal text-slate-700">
+                    <div className="p-9">
+                        <div className="flex flex-col mx-0 mt-8 text-sm font-normal text-slate-700">
                             Technician notes:
                             <div className='flex-col gap-10 flex pt-16'>
                                 <div className='w-full border-slate-500 border'></div>
@@ -175,19 +175,19 @@ const NewOrder = () => {
                     </div>
 
                     <div className='flex justify-end items-end px-7 gap-5'>
-                        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={() => window.print()}  >
+                        <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onClick={() => window.print()}  >
                             Print
                         </button>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=>saveHandler()} >
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=>saveHandler()} >
                             {!loading?"Create repair order":"Loading..."}
                         </button>
                     </div>
 
 
 
-                    <div class="mt-48 p-9">
-                        <div class="border-t pt-9 border-slate-200">
-                            <div class="text-sm font-light text-slate-700">
+                    <div className="mt-48 p-9">
+                        <div className="border-t pt-9 border-slate-200">
+                            <div className="text-sm font-light text-slate-700">
                                 <p>
                                 I hereby authorize the above repair service to be done along with the necessary material, and hereby grant you/or your employees, permission to operate the car, truck, or vehicle herein described on streets, highways, or elsewhere for the purpose of testing and/or inspection. 
                                 An express mechanic's lien is hereby acknowledged an above car, truck or vehicle to secure the number of repairs thereto. You will not be held responsible for loss or damage to vehicle or articles left in vehicle in case of fire, theft, accident, or any other cause beyond your control. 

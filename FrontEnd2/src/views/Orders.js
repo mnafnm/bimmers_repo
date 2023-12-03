@@ -11,7 +11,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import Modal from '../components/modal';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const columnHelper = createColumnHelper()
 
 const handleDelete = (data) => {
@@ -31,60 +31,62 @@ const handleDelete = (data) => {
 
 const Orders = () => {
     const columns = [
-        columnHelper.accessor('CusFname', {
+        columnHelper.accessor('CUSTOMER_FIRST_NAME', {
             header: () => <span>First Name</span>,
             cell: info => info.getValue(),
         }),
-        columnHelper.accessor('CusLname', {
+        columnHelper.accessor('CUSTOMER_LAST_NAME', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Last Name</span>,
         }),
-        columnHelper.accessor('CarModel', {
+        columnHelper.accessor('MODEL', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Model</span>,
         }),
-        columnHelper.accessor('CarMake', {
+        columnHelper.accessor('MAKE', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Make</span>,
         }),
-        columnHelper.accessor('CarYear', {
+        columnHelper.accessor('PRODUCTION_DATE', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Year</span>,
         }),
-        columnHelper.accessor('CarColor', {
+        columnHelper.accessor('COLOR', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Color</span>,
         }),
-        columnHelper.accessor('PlateNum', {
+        columnHelper.accessor('LICENSE_PLATE', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Plate Number</span>,
         }),
-        columnHelper.accessor('PhoneNu', {
+        columnHelper.accessor('CUSTOMER_PRIMARY_PHONE', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Phone Number</span>,
         }),
-        columnHelper.accessor('Street', {
+        columnHelper.accessor('CUSTOMER_STREET', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Street</span>,
         }),
-        columnHelper.accessor('City', {
+        columnHelper.accessor('CUSTOMER_CITY', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>City</span>,
         }),
-        columnHelper.accessor('StateName', {
+        columnHelper.accessor('CUSTOMER_STATE', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>State</span>,
         }),
-        columnHelper.accessor('ZipCode', {
+        columnHelper.accessor('CUSTOMER_ZIPCODE', {
             cell: info => <i>{info.getValue()}</i>,
             header: () => <span>Zip Code</span>,
         }),
         columnHelper.display({
-            id: "Description",
-            cell: info =>
+            
+            id: "order_ID",
+            cell: (info) =>
+                
                 <>
-                   <button className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 mb-1 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
-                   >Repair Orders</button>
+                   <Link to={`/Orders/edit/${info.row.original.order_ID}`} className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 mb-1 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
+                   >Repair Orders</Link>
                    <button className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
                    >Invoice</button>
                 </>,
@@ -123,8 +125,9 @@ const Orders = () => {
         const db = getFirestore(firebaseapp);
         const docRef = collection(db, "customers");
         const getData = async () => {
-            const data = await getDocs(docRef);
-            setData(data.docs.map(doc => doc.data()))
+            const data = await fetch("http://localhost:4000/orders");
+            const data2 = await data.json();
+            setData(data2)
         }
         getData()
         setLoading(false)
