@@ -10,10 +10,12 @@ import LookUp from './views/LookUp';
 import NewOrder from './views/NewOrder';
 import Orders from './views/Orders';
 import CreateInvoice from './views/CreateInvoice';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
    <>
+   <ToastContainer />
     <Navbar/>
     <div className='w-full flex-col justify-center items-center px-10 md:px-40'>
       <Routes>

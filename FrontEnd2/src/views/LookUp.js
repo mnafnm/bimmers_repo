@@ -3,6 +3,8 @@ import firebaseapp from '../utils/initfirebase'
 import { getFirestore, collection, getDocs, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
+
 import {
   createColumnHelper,
   flexRender,
@@ -14,75 +16,66 @@ import Modal from '../components/modal';
 import { useNavigate } from 'react-router-dom';
 const columnHelper = createColumnHelper()
 
-const handleDelete = (data) => {
-  const db = getFirestore(firebaseapp);
-  console.log(data.Id)
-  const deleteData = async () => {
-    try {
-      await deleteDoc(doc(db, "customers", data.Id))
-      window.location.reload()
-    }
-    catch (e) {
-      console.log("Some Error Occured", e)
-    }
-  }
-  deleteData()
-}
+
 
 const LookUp = () => {
+  
+  const [data, setData] = React.useState([])
+
+
   const columns = [
-    columnHelper.accessor('CusFname', {
+    columnHelper.accessor('CUSTOMER_FIRST_NAME', {
       header: () => <span>First Name</span>,
       cell: info => info.getValue(),
     }),
-    columnHelper.accessor('CusLname', {
+    columnHelper.accessor('CUSTOMER_LAST_NAME', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Last Name</span>,
     }),
-    columnHelper.accessor('CarModel', {
+    columnHelper.accessor('MODEL', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Model</span>,
     }),
-    columnHelper.accessor('CarMake', {
+    columnHelper.accessor('MAKE', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Make</span>,
     }),
-    columnHelper.accessor('CarYear', {
+    columnHelper.accessor('PRODUCTION_DATE', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Year</span>,
     }),
-    columnHelper.accessor('CarColor', {
+    columnHelper.accessor('COLOR', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Color</span>,
     }),
-    columnHelper.accessor('PlateNum', {
+    columnHelper.accessor('LICENSE_PLATE', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Plate Number</span>,
     }),
-    columnHelper.accessor('PhoneNu', {
+    columnHelper.accessor('CUSTOMER_PRIMARY_PHONE', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Phone Number</span>,
     }),
-    columnHelper.accessor('Street', {
+    columnHelper.accessor('CUSTOMER_STREET', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Street</span>,
     }),
-    columnHelper.accessor('City', {
+    columnHelper.accessor('CUSTOMER_CITY', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>City</span>,
     }),
-    columnHelper.accessor('StateName', {
+    columnHelper.accessor('CUSTOMER_STATE', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>State</span>,
     }),
-    columnHelper.accessor('ZipCode', {
+    columnHelper.accessor('CUSTOMER_ZIPCODE', {
       cell: info => <i>{info.getValue()}</i>,
       header: () => <span>Zip Code</span>,
     }),
     columnHelper.display({
       id: "Description",
       cell: info => 
-      <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={()=>{navigate(`../neworder?id=${info.row.original.Id}`, {state: info.row.original})}}>Create new order</button>,
+      <button className="bg-transparent hover:bg-black text-black-700 font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded" onClick={()=>{navigate('../neworder', { state: { obj: JSON.stringify(info.row.original) } })}}>Create new order</button>,
       header: "Orders",
     }),
     // columnHelper.display({
@@ -113,10 +106,28 @@ const LookUp = () => {
   }
 
 
-  const [data, setData] = React.useState([])
 
 
-
+  const handleDelete = (data) => {
+    const db = getFirestore(firebaseapp);
+    console.log(data.CUSTOMER_ID)
+    const deleteData = async () => {
+      try {
+        const postData = {
+          customerID: data.CUSTOMER_ID,
+        };
+        const response = await axios.post("http://localhost:4000/deleteCustomer", postData)
+        if(response.data)
+        {
+          window.location.reload()
+        }
+      }
+      catch (e) {
+        console.log("Some Error Occured", e)
+      }
+    }
+    deleteData()
+  }
 
 
 
@@ -124,13 +135,18 @@ const LookUp = () => {
   const [columnFilters, setColumnFilters] = useState('');
   const [loading, setLoading] = useState(false);
   console.log(loading)
-  useEffect(() => {
+  useEffect( () => {
     setLoading(true)
-    const db = getFirestore(firebaseapp);
-    const docRef = collection(db, "customers");
+    
+   
+    // const db = getFirestore(firebaseapp);
+    // const docRef = collection(db, "customers");
     const getData = async () => {
-      const data = await getDocs(docRef);
-      setData(data.docs.map(doc => doc.data()))
+      const response = await axios.get("http://localhost:4000/getCustomers")
+      if(response.data)
+      {
+        setData(response.data)
+      }
     }
     getData()
     setLoading(false)

@@ -1,39 +1,62 @@
 import React, { useState } from 'react'
+import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
-
+import axios from 'axios'
 import firebaseapp from '../utils/initfirebase'
-const uniqueId = Math.random().toString(36).substr(2, 9);
+const uniqueId = Math.floor(Math.random() * 100000) + 1;
 const RepairOrder = () => {
 
     const location = useLocation()
-    const data = location.state
+    const data2 = location.state
     const [mechanicNotes, setMechanicNotes] = useState("")
-    const [recommendedServices, setRecommendedServices] = useState([])
+    const [recommendedServices, setRecommendedServices] = useState("")
     const navigate = useNavigate()
+    const [data, setData] = React.useState({});
 
-    const ind = new URLSearchParams(window.location.search).get('ind')
+    useEffect(() => {
+        //const db = getFirestore(firebaseapp);
+        const serializedObj = location.state?.obj;
+        const data = JSON.parse(serializedObj);
+        //const docRef = doc(db, "customers", id);
+        const getData = async () => {
+            
+            setData(data)
+        }
+        getData()
+    }, [])
     const date = new Date();
     const handleClick = async () => {
 
-        const db = getFirestore(firebaseapp);
-        data.Orders[ind] = {
-            ...data.Orders[ind],
-            mechanicNotes,
-            recommendedServices
-        }
-        try {
-            await setDoc(doc(db, "customers", data.Id), data)
-            navigate(`/CreateInvoice?ind=${ind}`, { state: { ...data,  } })
-        }
-        catch (e) {
-            console.log("Some Error Occured", e)
-        }
+        // const db = getFirestore(firebaseapp);
+        // data.Orders[ind] = {
+        //     ...data.Orders[ind],
+        //     mechanicNotes,
+        //     recommendedServices
+        // }
+        // try {
+        //     await setDoc(doc(db, "customers", data.Id), data)
+           
+        // }
+        // catch (e) {
+        //     console.log("Some Error Occured", e)
+        // }
+
+        data.mechanicNotes = mechanicNotes
+        data.recommendedServices = recommendedServices
+        data.invoiceNumber = Math.floor(Math.random() * 100000) + 1
+    
+        const postData = {
+            order: data,
+          };
+console.log(data)
+        const response = await axios.post("http://localhost:4000/saveRepairOrder", postData)
+        navigate('/CreateInvoice', { state: { obj: JSON.stringify(data) } })
 
     }
-
-    console.log(mechanicNotes)
+console.log(data)
+   
 
 
     return (
@@ -57,10 +80,10 @@ const RepairOrder = () => {
                                     <p class="text-sm font-normal text-slate-700">
                                         Invoice Detail:
                                     </p>
-                                    <p>{data.CusFname} {data.CusLname}</p>
-                                    <p>{data.Street} {data.City} {data.StateName}</p>
-                                    <p>{data.ZipCode}</p>
-                                    <p>{data.PhoneNum}</p>
+                                    <p>{data.CUSTOMER_FIRST_NAME} {data.CUSTOMER_LAST_NAME}</p>
+                                    <p>{data.CUSTOMER_STREET} {data.CUSTOMER_CITY} {data.CUSTOMER_STATE}</p>
+                                    <p>{data.CUSTOMER_ZIPCODE}</p>
+                                    <p>{data.CUSTOMER_PRIMARY_PHONE}</p>
                                 </div>
                                 <div class="text-sm font-light text-slate-500">
                                     <p class="text-sm font-normal text-slate-700">Billed To</p>
@@ -93,22 +116,37 @@ const RepairOrder = () => {
                                                 <th scope="col" class=" px-6 py-4">Make</th>
                                                 <th scope="col" class=" px-6 py-4">Model</th>
                                                 <th scope="col" class=" px-6 py-4">Licence</th>
-                                                <th scope="col" class=" px-6 py-4">Mileage</th>
                                                 <th scope="col" class=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr class="border-b dark:border-neutral-500">
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.CarColor}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.CarYear}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.CarMake}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.CarModel}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.PlateNum}</td>
+                                                <td class="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
+                                                <td class="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
+                                                <td class="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
+                                                <td class="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
+                                                <td class="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
+                                                <td class="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
                                             </tr>
 
 
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="overflow-x-auto md:-mx-8">
+                            <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
+                                <div class="overflow-hidden flex gap-5">
+                            Repair Descriptions:
+                            <ul>
+      {data.descriptions && data.descriptions.map((str, index) => (
+        <li key={index}>{str}</li>
+      ))}
+    </ul>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +162,7 @@ const RepairOrder = () => {
                                     </div>
                                     <div className='flex flex-col gap-3 text-md font-normal text-slate-700'>
                                         <div className='text-slate-800'>Recommended services:</div>
-                                        <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setMechanicNotes(e.target.value)} />
+                                        <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setRecommendedServices(e.target.value)} />
                                         
                                     </div>
                                 </div>

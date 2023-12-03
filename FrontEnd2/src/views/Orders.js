@@ -83,7 +83,10 @@ const Orders = () => {
             id: "Description",
             cell: info =>
                 <>
-                    <Modal data={info.row.original} saveHandler={saveHandler} setData={setData} />
+                   <button className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 mb-1 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
+                   >Repair Orders</button>
+                   <button className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
+                   >Invoice</button>
                 </>,
             header: "Orders",
         }),
