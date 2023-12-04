@@ -31,9 +31,9 @@ orderServicesAPI.patch('/orders/:id', async (req, res) => {
         {
             // update only some fields of order details by id from orders table
             const order_ID = req.params.id;
-            const { hour, rate, subtotal, discount, total, required_services, repair_items} = req.body;
-            const orderQuery = `UPDATE orders SET hour = ?, rate = ?, subtotal = ?, discount = ?, total = ?, repair_items = ? WHERE order_ID = ?;`
-            conn.query(orderQuery,[hour, rate, subtotal, discount, total, JSON.stringify(repair_items), order_ID],  (error, results)=>{
+            const { hour, rate, subtotal, discount, total, required_services, repair_items, towing_charge} = req.body;
+            const orderQuery = `UPDATE orders SET hour = ?, rate = ?, subtotal = ?, discount = ?, total = ?, repair_items = ?, towing_charge = ? WHERE order_ID = ?;`
+            conn.query(orderQuery,[hour, rate, subtotal, discount, total, JSON.stringify(repair_items),towing_charge, order_ID],  (error, results)=>{
                 if (error) throw error;
                 res.json(results)
             }
@@ -72,6 +72,7 @@ orderServicesAPI.post('/createOrder', async (req, res) => {
             // Convert to a MySQL-compatible string format
             const mysqlFormattedDate = orderDate.toISOString().slice(0, 19).replace('T', ' ');
             var order = {
+                towing_charge: r.towing_charge,
                 mechanicNotes: r.mechanicNotes,
                 recommendedServices: r.recommendedServices,
                 invoice_number: r.invoice_number,
@@ -90,7 +91,7 @@ orderServicesAPI.post('/createOrder', async (req, res) => {
            
             const orderArray = Object.keys(order).map(key => order[key]);
           
-            var orderQuery = `INSERT INTO orders (mechanicNotes,recommendedServices,invoice_number, CUSTOMER_ID, hour, rate, subtotal, discount, total, required_services, repair_items, order_date) VALUES (?);`
+            var orderQuery = `INSERT INTO orders (towing_charge,mechanicNotes,recommendedServices,invoice_number, CUSTOMER_ID, hour, rate, subtotal, discount, total, required_services, repair_items, order_date) VALUES (?);`
 
             conn.query(orderQuery,[orderArray], (error, results)=>{
                 if (error) throw error ;

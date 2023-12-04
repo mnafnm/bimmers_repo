@@ -3,7 +3,7 @@ import Navbar from './views/Navbar';
 import Home from './views/Home';
 import RepairOrder from './views/RepairOrder';
 import Invoices from './views/Invoices';
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import React from 'react';
 import CheckIn from './views/CheckIn';
 import LookUp from './views/LookUp';
@@ -15,23 +15,32 @@ import EditOrders from './views/EditOrders';
 
 function App() {
   return (
-   <>
-   <ToastContainer />
-    <Navbar/>
-    <div className='w-full flex-col justify-center items-center px-10 md:px-40'>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/CheckIn" element={<CheckIn/>}/>
-        <Route path="/Orders" element={<Orders/>}/>
-        <Route path="/Orders/edit/:id" element={<EditOrders/>}/>
-        <Route path="/LookUp" element={<LookUp/>}/>
-        <Route path="/CreateInvoice/" element={<CreateInvoice/>}/>
-        <Route path="/RepairOrder/" element={<RepairOrder/>}/>
-        <Route path="/Invoices" element={<Invoices/>}/>
-        <Route path="/neworder" element={<NewOrder/>}/>
-      </Routes>
-    </div>
-   </>
+    <>
+      <ToastContainer />
+      <Navbar />
+      <div className='w-full flex-col justify-center items-center px-10 md:px-40'>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/CheckIn" element={<CheckIn />} />
+          <Route path="/Orders" element={<Orders />} />
+          <Route path="/Orders/edit/:id" element={<EditOrders />} />
+          <Route path="/LookUp" element={<LookUp />} />
+          <Route path="/CreateInvoice/" element={<CreateInvoice />} />
+          <Route path="/RepairOrder/" element={<RepairOrder />} />
+          <Route path="/Invoices" element={<Invoices />} />
+          <Route path="/neworder" element={<NewOrder />} />
+        </Routes>
+
+        <div>
+          <div class="fixed bottom-8 right-8">
+            <a href="#" class="text-4xl flex items-center justify-center font-bold w-16 h-16 bg-blue-500 text-white rounded-full p-4">
+              ?
+            </a>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }
 

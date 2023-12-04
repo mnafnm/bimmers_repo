@@ -11,6 +11,7 @@ const CreateInvoice = () => {
   const [repair, setRepair] = useState([])
 
   const [order, setOrder] = useState({
+    towing_charge:0,
     order_ID: uniqueId,
     rate: 125,
     hours: 0,
@@ -78,19 +79,27 @@ const CreateInvoice = () => {
       hours: parseInt(val),
     })
   }
+  const setTowingcharge = (val) => {
+    if (val === "") val = 0
+    setOrder({
+      ...order,
+      towing_charge: Number(val),
+      total: Number(order.subTotal) +Number(val) - Number(order.discount)
+    })
+  }
   const setDiscount = (val) => {
     if (val === "") val = 0
     setOrder({
       ...order,
-      discount: val,
-      total: parseFloat(order.subTotal - val).toFixed(2)
+      discount: Number(val),
+      total : parseFloat(Number(order.subTotal) + Number(order.towing_charge) - Number(val)).toFixed(2)
     })
   }
   useEffect(() => {
     setOrder({
       ...order,
       subTotal: parseFloat((order.hours * 125) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0)).toFixed(2),
-      total: parseFloat((order.hours * 125) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0) - order.discount).toFixed(2)
+      total: parseFloat((order.hours * 125) + order.towing_charge + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0) - order.discount).toFixed(2)
     })
 
   }, [repair, order.hours])
@@ -131,7 +140,7 @@ const CreateInvoice = () => {
 
   }
 
-  console.log("data ", data)
+  console.log("order ", order)
   // console.log(hours)
   // console.log("Repair ", order)
   return (
@@ -354,6 +363,22 @@ const CreateInvoice = () => {
                   </tr>
                   <tr>
                     <th scope="row" colSpan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                      Towing Charge
+                    </th>
+                    <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+
+                      <input
+                        type="number"
+                        min={0}
+                        value={order.towing_charge}
+                        className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) => { setTowingcharge(e.target.value) }}
+                      />
+
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" colSpan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
                       Discount
                     </th>
                     <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
@@ -361,6 +386,7 @@ const CreateInvoice = () => {
                       <input
                         type="number"
                         min={0}
+                        value={order.discount}
                         className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         onChange={(e) => { setDiscount(e.target.value) }}
                       />
