@@ -45,7 +45,8 @@ const CheckIn = () => {
   const [loading, setLoading] = useState(false)
   //console.log(data)
   
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault()
     setLoading(true)
 console.log(customerInfo)
 console.log(vehicleInfo)
@@ -85,7 +86,7 @@ const postData = {
 
 
   return (
-    <form className='w-full items-center flex-col justify-center py-10'>
+    <form onSubmit={(e)=>handleSubmit(e)} className='w-full items-center flex-col justify-center py-10'>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">New Customer</h2>
@@ -106,6 +107,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="first-name"
                   id="first-name"
@@ -122,6 +124,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="last-name"
                   id="last-name"
@@ -138,6 +141,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   id="phone"
                   name="phone"
                   type="phone"
@@ -154,6 +158,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="street-address"
                   id="street-address"
@@ -170,6 +175,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="city"
                   id="city"
@@ -186,6 +192,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="region"
                   id="region"
@@ -202,6 +209,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="postal-code"
                   id="postal-code"
@@ -227,6 +235,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="vin"
                   id="vin"
@@ -245,6 +254,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="car-make"
                   id="car-make"
@@ -261,6 +271,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="car-model"
                   id="car-model"
@@ -277,6 +288,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="car-color"
                   id="car-color"
@@ -293,6 +305,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  required
                   type="text"
                   name="plate-number"
                   id="plate-number"
@@ -309,7 +322,8 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
-                  type="text"
+                  required
+                  type="number"
                   name="car-year"
                   id="car-year"
                   autoComplete="car-year"
@@ -327,8 +341,8 @@ const postData = {
           Cancel
         </button>
         <button
-          type="button"
-          onClick={()=>handleSubmit()}
+          type="submit"
+
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           {loading ? 'loading' : 'Save'}
