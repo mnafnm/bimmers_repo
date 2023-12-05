@@ -1,32 +1,32 @@
 import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
-import axios from 'axios'
-import firebaseapp from '../utils/initfirebase'
 const uniqueId = Math.floor(Math.random() * 100000) + 1;
-const RepairOrder = () => {
+const EditRepairOrder = () => {
 
-    const location = useLocation()
-    const data2 = location.state
+        // get url params
+    const params = useParams();
+    const id = params.id;
     const [mechanicNotes, setMechanicNotes] = useState("")
     const [recommendedServices, setRecommendedServices] = useState("")
     const navigate = useNavigate()
     const [data, setData] = React.useState({});
     const agreeRef = useRef();
     // console.log(data)
-    useEffect(() => {
-        //const db = getFirestore(firebaseapp);
-        const serializedObj = location.state?.obj;
-        const data = JSON.parse(serializedObj);
-        //const docRef = doc(db, "customers", id);
+    useEffect(()=>{
         const getData = async () => {
-            
-            setData(data)
+          const response = await fetch(`http://localhost:4000/orders/${id}`)
+          const data = await response.json()
+          console.log(data)
+          if(data[0]?.recommendedServices?.length > 0){
+            agreeRef.current.checked = true
+          }
+          setData(data[0])
+ 
         }
         getData()
-    }, [])
+      },[id]) 
     const date = new Date();
     const handleClick = async () => {
 
@@ -44,17 +44,17 @@ const RepairOrder = () => {
         //     console.log("Some Error Occured", e)
         // }
 
-        data.mechanicNotes = mechanicNotes
+       
         data.agree = agreeRef.current.checked
-        data.recommendedServices = recommendedServices
-        data.invoiceNumber = Math.floor(Math.random() * 100000) + 1
+    
+      
     
         const postData = {
             order: data,
           };
         console.log(data)
         // const response = await axios.post("http://localhost:4000/saveRepairOrder", postData)
-        navigate('/CreateInvoice', { state: { obj: JSON.stringify(data) } })
+        navigate(`/Orders/edit/${id}`, { state: { obj: JSON.stringify(data) } })
 
     }
 // console.log(data)
@@ -142,14 +142,14 @@ const RepairOrder = () => {
                     <div class="flex flex-col">
                         <div class="overflow-x-auto md:-mx-8">
                             <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
-                                <div class="overflow-hidden flex gap-5">
+                            <div class="overflow-hidden flex gap-5">
                             Repair Descriptions:
                             <ul>
-      {data.descriptions && data.descriptions.map((str, index) => (
-        <li key={index}>{str}</li>
-      ))}
-    </ul>
-                                </div>
+                            {data.required_services && JSON.parse(data?.required_services).map((str, index) => (
+                                <li key={index}>{str}</li>
+                            ))}
+                            </ul>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -160,11 +160,18 @@ const RepairOrder = () => {
                                 <div class="overflow-hidden flex gap-5">
                                     <div className='p-1'>
                                         <div className='text-md font-normal text-slate-700 mb-2'>Mechanic Notes:</div>
-                                        <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setMechanicNotes(e.target.value)} />
+                                        <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setData({
+                                            ...data,
+                                            mechanicNotes: e.target.value
+                                        })} value={data?.mechanicNotes} />
                                     </div>
                                     <div className='flex flex-col gap-3 text-md font-normal text-slate-700'>
-                                        <div className='text-slate-800 flex gap-2 items-center'>Recommended services:  <input ref={agreeRef} type="checkbox" name="agree" id="agree" /> <label htmlFor="agree">I agree</label> </div>
-                                        <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setRecommendedServices(e.target.value)} />
+                                        <div className='text-slate-800 flex gap-2 items-center'>Recommended services:  <input ref={agreeRef}
+                                        type="checkbox" name="agree" id="agree" /> <label htmlFor="agree">I agree</label> </div>
+                                        <textarea value={data?.recommendedServices} className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setData({
+                                            ...data,
+                                            recommendedServices: e.target.value
+                                        })} />
                                         
                                     </div>
                                 </div>
@@ -206,4 +213,4 @@ const RepairOrder = () => {
 
 }
 
-export default RepairOrder
+export default EditRepairOrder

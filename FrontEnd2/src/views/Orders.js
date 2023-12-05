@@ -85,8 +85,8 @@ const Orders = () => {
             cell: (info) =>
                 
                 <>
-                   <button className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
-                   >Repair Orders</button>
+                   <Link to={`/RepairOrder/edit/${info.row.original.order_ID}`}><button className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
+                   >Repair Orders</button></Link>
                    <Link to={`/Orders/edit/${info.row.original.order_ID}`} className="bg-transparent hover:bg-blue-200 text-black-700 font-semibold hover:text-black-500 mb-1 py-2 px-4 border border-black-500 hover:border-transparent rounded" 
                    >Invoice</Link>
                 </>,

@@ -14,6 +14,7 @@ const NewOrder = () => {
     const [data, setData] = React.useState({});
     const navigate = useNavigate()
     const navigateToRepairOrder = (data) => {
+        data.invoice_number = uniqueId
         navigate('/RepairOrder', { state: { obj: JSON.stringify(data) } })
 
     }

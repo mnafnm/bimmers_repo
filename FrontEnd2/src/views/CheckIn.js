@@ -235,6 +235,7 @@ const postData = {
               </label>
               <div className="mt-2">
                 <input
+                  maxlength="7"
                   required
                   type="text"
                   name="vin"

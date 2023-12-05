@@ -12,7 +12,7 @@ const CreateInvoice = () => {
 
   const [order, setOrder] = useState({
     towing_charge:0,
-    order_ID: uniqueId,
+    order_ID: data.invoice_number,
     rate: 125,
     hours: 0,
     discount: 0,
@@ -121,7 +121,7 @@ const CreateInvoice = () => {
       required_services: data.descriptions,
       repair_items: repairItems,
       order_date: date,
-      invoice_number: uniqueId,
+      invoice_number: data.invoice_number,
       mechanicNotes: data.mechanicNotes,
       recommendedServices: data.agree ? data.recommendedServices : "",
     }
@@ -133,6 +133,7 @@ const CreateInvoice = () => {
       body: JSON.stringify(orderData)
     })
     const response = await res.json()
+    console.log(response)
     if (response.affectedRows === 1) {
 
       navigate('/Orders')
@@ -175,7 +176,7 @@ const CreateInvoice = () => {
                 </div>
                 <div class="text-sm font-light text-slate-500">
                   <p class="text-sm font-normal text-slate-700">Invoice Number</p>
-                  <p>{uniqueId}</p>
+                  <p>{data.invoice_number}</p>
 
                   <p class="mt-2 text-sm font-normal text-slate-700">
                     Date of Issue

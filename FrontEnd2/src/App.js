@@ -12,6 +12,7 @@ import Orders from './views/Orders';
 import CreateInvoice from './views/CreateInvoice';
 import { ToastContainer } from 'react-toastify';
 import EditOrders from './views/EditOrders';
+import EditRepairOrder from './views/EditRepairOrder';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/LookUp" element={<LookUp />} />
           <Route path="/CreateInvoice/" element={<CreateInvoice />} />
           <Route path="/RepairOrder/" element={<RepairOrder />} />
+          <Route path="/RepairOrder/edit/:id" element={<EditRepairOrder />} />
           <Route path="/Invoices" element={<Invoices />} />
           <Route path="/neworder" element={<NewOrder />} />
         </Routes>
