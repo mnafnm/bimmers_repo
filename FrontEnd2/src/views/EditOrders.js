@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import Help from '../components/Help';
 const uniqueId = Math.random().toString(36).substr(2, 9);
 const EditOrders = () => {
 
@@ -457,6 +458,7 @@ const EditOrders = () => {
           </div>
         </div>
       </article>
+      <Help link="https://drive.google.com/file/d/1eR7Ut5eAXCQzVmYdgEL-SfDbMfhB6DT9/view?usp=drive_link"/>
     </div>
 
   );

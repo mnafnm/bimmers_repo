@@ -456,7 +456,7 @@ const CreateInvoice = () => {
           </div>
         </div>
       </article>
-      <Help link="#"/>
+      <Help link="https://drive.google.com/file/d/1eR7Ut5eAXCQzVmYdgEL-SfDbMfhB6DT9/view?usp=drive_link"/>
 
     </div>
 

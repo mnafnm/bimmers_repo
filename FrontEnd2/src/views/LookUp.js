@@ -14,6 +14,7 @@ import {
 } from '@tanstack/react-table'
 import Modal from '../components/modal';
 import { useNavigate } from 'react-router-dom';
+import Help from '../components/Help';
 const columnHelper = createColumnHelper()
 
 
@@ -233,6 +234,8 @@ const LookUp = () => {
       </div>
 
       <div className="h-4" />
+      <Help link="https://drive.google.com/file/d/1dVMl2Q3CGesFYbqPaveH5-GuOzq5KfVu/view?usp=drive_link" />
+
     </>
   )
 }

@@ -350,7 +350,7 @@ const postData = {
           {loading ? 'loading' : 'Save'}
         </button>
       </div>
-      <Help link="#"/>
+      <Help link="https://drive.google.com/file/d/1GTOZffKdA9fWFoRMl0IHcuCTp7Kh1sfo/view?usp=drive_link"/>
     </form>
   );
 }

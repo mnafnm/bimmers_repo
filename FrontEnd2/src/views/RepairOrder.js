@@ -5,6 +5,7 @@ import logo from '../assets/logo.png'
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import axios from 'axios'
 import firebaseapp from '../utils/initfirebase'
+import Help from '../components/Help';
 const uniqueId = Math.floor(Math.random() * 100000) + 1;
 const RepairOrder = () => {
 
@@ -199,6 +200,7 @@ const RepairOrder = () => {
                     </div>
                 </div>
             </article>
+            <Help link="https://drive.google.com/file/d/1pUwtgtqWZrii_sz_Jn8EFDZ_z-ZN_LGO/view?usp=drive_link"/>
         </div>
 
     );

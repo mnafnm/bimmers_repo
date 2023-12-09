@@ -12,6 +12,7 @@ import {
 } from '@tanstack/react-table'
 import Modal from '../components/modal';
 import { Link, useNavigate } from 'react-router-dom';
+import Help from '../components/Help';
 const columnHelper = createColumnHelper()
 
 const handleDelete = (data) => {
@@ -214,6 +215,7 @@ const Orders = () => {
             </div>
 
             <div className="h-4" />
+            <Help link="https://drive.google.com/file/d/1pUwtgtqWZrii_sz_Jn8EFDZ_z-ZN_LGO/view?usp=drive_link"/>
         </>
     )
 }

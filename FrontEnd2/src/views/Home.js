@@ -321,7 +321,7 @@ export default function App() {
         </button>
       </div>
 
-      <Help link="https://fullcalendar.io/docs/react" />
+      <Help link="https://drive.google.com/file/d/1M2L-TiC87MWXwcCgK8VnVQ8NMVQ6p_sO/view?usp=drive_link" />
     </div>
   );
 }

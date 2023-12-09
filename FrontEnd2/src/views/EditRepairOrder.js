@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import Help from '../components/Help';
 const uniqueId = Math.floor(Math.random() * 100000) + 1;
 const EditRepairOrder = () => {
 
@@ -231,6 +232,7 @@ const EditRepairOrder = () => {
                     </div>
                 </div>
             </article>
+            <Help link="https://drive.google.com/file/d/1pUwtgtqWZrii_sz_Jn8EFDZ_z-ZN_LGO/view?usp=drive_link"/>
         </div>
 
     );

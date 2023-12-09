@@ -4,6 +4,7 @@ import firebaseapp from '../utils/initfirebase'
 import logo from '../assets/logo.png'
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { Toast } from '@chakra-ui/react';
+import Help from '../components/Help';
 const uniqueId = Math.random().toString(36).substr(2, 9);
 const NewOrder = () => {
     const location = useLocation();
@@ -206,6 +207,7 @@ const NewOrder = () => {
                     </div>
                 </div>
             </article>
+            <Help link="https://drive.google.com/file/d/1pUwtgtqWZrii_sz_Jn8EFDZ_z-ZN_LGO/view?usp=drive_link"/>
         </div>
 
     );
