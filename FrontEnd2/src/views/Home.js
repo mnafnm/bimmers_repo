@@ -13,6 +13,7 @@ import {
   fetchSavedEvents,
   saveEventsToDB,
 } from "../utils/internalDB";
+import Help from "../components/Help";
 
 const getCalendarEventColor = (event) => {
   let color;
@@ -166,7 +167,11 @@ export default function App() {
     // Open the popup window
     openPopup({});
   };
-
+  const colors = [
+    { name: 'Repair', value: '#FF0000' },
+    { name: 'Diagnostic', value: '#00FF00' },
+    { name: 'Service', value: '#000000' }
+   ];
   return (
     <div className="App">
       <Modal
@@ -271,6 +276,17 @@ export default function App() {
         </Box>
       </Modal>
 
+      {/* color instructions */}
+      <div className="color-box absolute left-5 top-1/3 ">
+        <h2 className="text-left font-medium underline mb-2">Colors</h2>
+      <ul className="">
+      {colors.map((color, index) => (
+        <li className="text-left font-bold" key={index}>
+          <span style={{ color: color.value }}>{color.name}</span>
+        </li>
+      ))}
+    </ul>
+      </div>
       {/* FullCalendar component */}
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
@@ -304,6 +320,8 @@ export default function App() {
           Clear All Calendar Data
         </button>
       </div>
+
+      <Help link="https://fullcalendar.io/docs/react" />
     </div>
   );
 }

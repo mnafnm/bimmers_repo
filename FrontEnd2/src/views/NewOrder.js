@@ -41,8 +41,12 @@ const NewOrder = () => {
     const saveHandler = async () => {
         setLoading(true)
         //const db = getFirestore(firebaseapp);
-        
-        data.descriptions = descriptions
+        const descriptionArrayOfObj = descriptions.map((description, index) => ({
+            description,
+            hour: 0,
+            rate: 125,
+        }))
+        data.descriptions = descriptionArrayOfObj
         // try{
         //     await setDoc(doc(db, "customers", data.Id), data, { merge: true })
         //     Toast({

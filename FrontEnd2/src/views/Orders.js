@@ -151,18 +151,18 @@ const Orders = () => {
     return (
         <>
 
-            <div class="flex flex-col pt-5">
+            <div className="flex flex-col pt-5">
 
                 <div class='w-[40vw] mx-auto'>
-                    <div class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
-                        <div class="grid place-items-center h-full w-12 text-gray-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+                        <div className="grid place-items-center h-full w-12 text-gray-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
 
                         <input
-                            class="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
+                            className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
                             type="text"
                             id="search"
                             placeholder="Search something.."
@@ -172,12 +172,12 @@ const Orders = () => {
                     </div>
                 </div>
 
-                <div class="pt-5 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                        <div class="overflow-auto max-h-[80vh]">
-                            <table class="min-w-full text-center text-sm font-light">
+                <div className="pt-5 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                        <div className="overflow-auto max-h-[80vh]">
+                            <table className="min-w-full text-center text-sm font-light">
                                 <thead
-                                    class="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
+                                    className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
                                     {/* <tr> */}
                                     {table.getHeaderGroups().map(headerGroup => (
                                         <tr key={headerGroup.id}>

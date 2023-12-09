@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
+import Help from '../components/Help';
 
 const CheckIn = () => {
 
@@ -349,6 +350,7 @@ const postData = {
           {loading ? 'loading' : 'Save'}
         </button>
       </div>
+      <Help link="#"/>
     </form>
   );
 }

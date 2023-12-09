@@ -34,13 +34,7 @@ function App() {
           <Route path="/neworder" element={<NewOrder />} />
         </Routes>
 
-        <div>
-          <div class="fixed bottom-8 right-8">
-            <a href="#" class="text-4xl flex items-center justify-center font-bold w-16 h-16 bg-blue-500 text-white rounded-full p-4">
-              ?
-            </a>
-          </div>
-        </div>
+        
       </div>
     </>
   )

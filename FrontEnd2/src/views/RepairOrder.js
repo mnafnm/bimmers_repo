@@ -63,23 +63,23 @@ const RepairOrder = () => {
 
     return (
 
-        <div class="max-w-5xl mx-auto py-16 bg-white">
-            <article class="overflow-hidden">
-                <div class="bg-[white] rounded-b-md">
-                    <div class="p-9">
-                        <div class="space-y-6 text-slate-700">
-                            <img class="object-cover h-12" src={logo} alt="" />
+        <div className="max-w-5xl mx-auto py-16 bg-white">
+            <article className="overflow-hidden">
+                <div className="bg-[white] rounded-b-md">
+                    <div className="p-9">
+                        <div className="space-y-6 text-slate-700">
+                            <img className="object-cover h-12" src={logo} alt="" />
 
-                            <p class="text-xl font-extrabold tracking-tight uppercase font-body">
+                            <p className="text-xl font-extrabold tracking-tight uppercase font-body">
                                 Bimmers R Us
                             </p>
                         </div>
                     </div>
-                    <div class="p-9">
-                        <div class="flex w-full">
-                            <div class="grid grid-cols-4 gap-12">
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">
+                    <div className="p-9">
+                        <div className="flex w-full">
+                            <div className="grid grid-cols-4 gap-12">
+                                <div className="text-sm font-light text-slate-500">
+                                    <p className="text-sm font-normal text-slate-700">
                                         Invoice Detail:
                                     </p>
                                     <p>{data.CUSTOMER_FIRST_NAME} {data.CUSTOMER_LAST_NAME}</p>
@@ -87,15 +87,15 @@ const RepairOrder = () => {
                                     <p>{data.CUSTOMER_ZIPCODE}</p>
                                     <p>{data.CUSTOMER_PRIMARY_PHONE}</p>
                                 </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">Billed To</p>
+                                <div className="text-sm font-light text-slate-500">
+                                    <p className="text-sm font-normal text-slate-700">Billed To</p>
                                     <p>Bimmers R Us</p>
                                 </div>
-                                <div class="text-sm font-light text-slate-500">
-                                    <p class="text-sm font-normal text-slate-700">Invoice Number</p>
+                                <div className="text-sm font-light text-slate-500">
+                                    <p className="text-sm font-normal text-slate-700">Invoice Number</p>
                                     <p>{data.invoice_number}</p>
 
-                                    <p class="mt-2 text-sm font-normal text-slate-700">
+                                    <p className="mt-2 text-sm font-normal text-slate-700">
                                         Date of Issue
                                     </p>
                                     <p>{date.getDate()}/{date.getMonth()}/{date.getFullYear()}</p>
@@ -105,30 +105,30 @@ const RepairOrder = () => {
                         </div>
                     </div>
 
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto md:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
-                                <div class="overflow-hidden">
-                                    <table class="min-w-full text-center text-sm font-light">
+                    <div className="flex flex-col">
+                        <div className="overflow-x-auto md:-mx-8">
+                            <div className="inline-block min-w-full py-2 sm:px-6 md:px-8">
+                                <div className="overflow-hidden">
+                                    <table className="min-w-full text-center text-sm font-light">
                                         <thead
-                                            class="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
+                                            className="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
                                             <tr>
-                                                <th scope="col" class=" px-6 py-4">Color</th>
-                                                <th scope="col" class=" px-6 py-4">Year</th>
-                                                <th scope="col" class=" px-6 py-4">Make</th>
-                                                <th scope="col" class=" px-6 py-4">Model</th>
-                                                <th scope="col" class=" px-6 py-4">Licence</th>
-                                                <th scope="col" class=" px-6 py-4">Vin</th>
+                                                <th scope="col" className=" px-6 py-4">Color</th>
+                                                <th scope="col" className=" px-6 py-4">Year</th>
+                                                <th scope="col" className=" px-6 py-4">Make</th>
+                                                <th scope="col" className=" px-6 py-4">Model</th>
+                                                <th scope="col" className=" px-6 py-4">Licence</th>
+                                                <th scope="col" className=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="border-b dark:border-neutral-500">
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
-                                                <td class="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
+                                            <tr className="border-b dark:border-neutral-500">
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
+                                                <td className="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
                                             </tr>
 
 
@@ -139,25 +139,25 @@ const RepairOrder = () => {
                         </div>
                     </div>
 
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto md:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
-                                <div class="overflow-hidden flex gap-5">
+                    <div className="flex flex-col">
+                        <div className="overflow-x-auto md:-mx-8">
+                            <div className="inline-block min-w-full py-2 sm:px-6 md:px-8">
+                                <div className="overflow-hidden flex gap-5">
                             Repair Descriptions:
                             <ul>
-      {data.descriptions && data.descriptions.map((str, index) => (
-        <li key={index}>{str}</li>
-      ))}
-    </ul>
+                        {data.descriptions && data.descriptions.map((description, index) => (
+                            <li key={index}>{description.description}</li>
+                        ))}
+                        </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex flex-col">
-                        <div class="overflow-x-auto md:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
-                                <div class="overflow-hidden flex gap-5">
+                    <div className="flex flex-col">
+                        <div className="overflow-x-auto md:-mx-8">
+                            <div className="inline-block min-w-full py-2 sm:px-6 md:px-8">
+                                <div className="overflow-hidden flex gap-5">
                                     <div className='p-1'>
                                         <div className='text-md font-normal text-slate-700 mb-2'>Mechanic Notes:</div>
                                         <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setMechanicNotes(e.target.value)} />
@@ -180,7 +180,7 @@ const RepairOrder = () => {
 
 
                     <div className='flex justify-end items-end px-7'>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleClick} >
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleClick} >
                             Go to Invoice
                         </button>
 
@@ -188,9 +188,9 @@ const RepairOrder = () => {
 
 
 
-                    <div class="mt-48 p-9">
-                        <div class="border-t pt-9 border-slate-200">
-                            <div class="text-sm font-light text-slate-700">
+                    <div className="mt-48 p-9">
+                        <div className="border-t pt-9 border-slate-200">
+                            <div className="text-sm font-light text-slate-700">
                                 <p>
                                    Display a message
                                 </p>

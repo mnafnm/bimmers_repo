@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
+import Help from '../components/Help';
 
 const uniqueId = Math.random().toString(36).substr(2, 9);
 const CreateInvoice = () => {
@@ -18,7 +19,8 @@ const CreateInvoice = () => {
     discount: 0,
     subTotal: 0,
     discount: 0,
-    total: 0
+    total: 0,
+    descriptions: data?.descriptions
   })
   const navigate = useNavigate()
 
@@ -98,11 +100,11 @@ const CreateInvoice = () => {
   useEffect(() => {
     setOrder({
       ...order,
-      subTotal: parseFloat((order.hours * 125) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0)).toFixed(2),
-      total: parseFloat((order.hours * 125) + order.towing_charge + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0) - order.discount).toFixed(2)
+      subTotal: order.descriptions.reduce((acc, item) => acc + item.rate * item.hour, 0) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0),
+      total: order.descriptions.reduce((acc, item) => acc + item.rate * item.hour, 0) + repair.reduce((acc, item) => acc + item.OEM_LIST_PRICE * item.quantity, 0) + Number(order.towing_charge) - Number(order.discount)
     })
 
-  }, [repair, order.hours])
+  }, [repair, order.descriptions])
 
   const createInvoice = async () => {
 
@@ -118,12 +120,13 @@ const CreateInvoice = () => {
     const orderData = {
       ...order,
       CUSTOMER_ID: data.CUSTOMER_ID,
-      required_services: data.descriptions,
+      required_services: order.descriptions,
       repair_items: repairItems,
       order_date: date,
       invoice_number: data.invoice_number,
       mechanicNotes: data.mechanicNotes,
-      recommendedServices: data.agree ? data.recommendedServices : "",
+      recommendedServices: data.recommendedServices,
+      agree: data.agree
     }
     const res = await fetch(`http://localhost:4000/createOrder`, {
       method: "POST",
@@ -135,34 +138,52 @@ const CreateInvoice = () => {
     const response = await res.json()
     console.log(response)
     if (response.affectedRows === 1) {
-
       navigate('/Orders')
     }
 
   }
 
+  const setHourForDescription = (index, value) => {
+    const newDescriptions = order.descriptions.map((item, ind) => {
+      if (ind === index) {
+        return {
+          ...item,
+          hour: value
+        }
+      }
+      return item
+    })
+    setOrder({
+      ...order,
+      descriptions: newDescriptions
+    })
+    
+  }
+
+
   console.log("order ", order)
+  console.log("data ", data)
   // console.log(hours)
   // console.log("Repair ", order)
   return (
 
-    <div class="max-w-5xl mx-auto py-16 bg-white">
-      <article class="overflow-hidden">
-        <div class="bg-[white] rounded-b-md">
-          <div class="p-9">
-            <div class="space-y-6 text-slate-700">
-              <img class="object-cover h-12" src={logo} alt="" />
+    <div className="max-w-5xl mx-auto py-16 bg-white">
+      <article className="overflow-hidden">
+        <div className="bg-[white] rounded-b-md">
+          <div className="p-9">
+            <div className="space-y-6 text-slate-700">
+              <img className="object-cover h-12" src={logo} alt="" />
 
-              <p class="text-xl font-extrabold tracking-tight uppercase font-body">
+              <p className="text-xl font-extrabold tracking-tight uppercase font-body">
                 Bimmers R Us
               </p>
             </div>
           </div>
-          <div class="p-9">
-            <div class="flex w-full">
-              <div class="grid grid-cols-4 gap-12">
-                <div class="text-sm font-light text-slate-500">
-                  <p class="text-sm font-normal text-slate-700">
+          <div className="p-9">
+            <div className="flex w-full">
+              <div className="grid grid-cols-4 gap-12">
+                <div className="text-sm font-light text-slate-500">
+                  <p className="text-sm font-normal text-slate-700">
                     Invoice Detail:
                   </p>
                   <p>{data.CUSTOMER_FIRST_NAME} {data.CUSTOMER_LAST_NAME}</p>
@@ -170,15 +191,15 @@ const CreateInvoice = () => {
                   <p>{data.CUSTOMER_ZIPCODE}</p>
                   <p>{data.CUSTOMER_PRIMARY_PHONE}</p>
                 </div>
-                <div class="text-sm font-light text-slate-500">
-                  <p class="text-sm font-normal text-slate-700">Billed To</p>
+                <div className="text-sm font-light text-slate-500">
+                  <p className="text-sm font-normal text-slate-700">Billed To</p>
                   <p>Bimmers R Us</p>
                 </div>
-                <div class="text-sm font-light text-slate-500">
-                  <p class="text-sm font-normal text-slate-700">Invoice Number</p>
+                <div className="text-sm font-light text-slate-500">
+                  <p className="text-sm font-normal text-slate-700">Invoice Number</p>
                   <p>{data.invoice_number}</p>
 
-                  <p class="mt-2 text-sm font-normal text-slate-700">
+                  <p className="mt-2 text-sm font-normal text-slate-700">
                     Date of Issue
                   </p>
                   <p>{date.getDate()}/{date.getMonth()}/{date.getFullYear()}</p>
@@ -190,31 +211,31 @@ const CreateInvoice = () => {
 
 
 
-          <div class="flex flex-col">
-            <div class="overflow-x-auto md:-mx-8">
-              <div class="inline-block min-w-full py-2 sm:px-6 md:px-8">
-                <div class="overflow-hidden">
-                  <table class="min-w-full text-center text-sm font-light">
+          <div className="flex flex-col">
+            <div className="overflow-x-auto md:-mx-8">
+              <div className="inline-block min-w-full py-2 sm:px-6 md:px-8">
+                <div className="overflow-hidden">
+                  <table className="min-w-full text-center text-sm font-light">
                     <thead
-                      class="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
+                      className="border-b bg-neutral-800 font-small text-white dark:border-neutral-500 dark:bg-neutral-900">
                       <tr>
-                        <th scope="col" class=" px-6 py-4">Color</th>
-                        <th scope="col" class=" px-6 py-4">Year</th>
-                        <th scope="col" class=" px-6 py-4">Make</th>
-                        <th scope="col" class=" px-6 py-4">Model</th>
-                        <th scope="col" class=" px-6 py-4">Plate Number</th>
-                        {/* <th scope="col" class=" px-6 py-4">Mileage</th> */}
-                        <th scope="col" class=" px-6 py-4">Vin</th>
+                        <th scope="col" className=" px-6 py-4">Color</th>
+                        <th scope="col" className=" px-6 py-4">Year</th>
+                        <th scope="col" className=" px-6 py-4">Make</th>
+                        <th scope="col" className=" px-6 py-4">Model</th>
+                        <th scope="col" className=" px-6 py-4">Plate Number</th>
+                        {/* <th scope="col" className=" px-6 py-4">Mileage</th> */}
+                        <th scope="col" className=" px-6 py-4">Vin</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr class="border-b dark:border-neutral-500">
-                        <td class="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
-                        <td class="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
+                      <tr className="border-b dark:border-neutral-500">
+                        <td className="whitespace-nowrap  px-6 py-4">{data.COLOR}</td>
+                        <td className="whitespace-nowrap  px-6 py-4">{data.PRODUCTION_DATE}</td>
+                        <td className="whitespace-nowrap  px-6 py-4">{data.MAKE}</td>
+                        <td className="whitespace-nowrap  px-6 py-4">{data.MODEL}</td>
+                        <td className="whitespace-nowrap  px-6 py-4">{data.LICENSE_PLATE}</td>
+                        <td className="whitespace-nowrap  px-6 py-4">{data.VIN}</td>
                       </tr>
 
 
@@ -222,23 +243,29 @@ const CreateInvoice = () => {
                     <tfoot>
                     <tr>
                       <td>
-                      <div className='pt-5'>
-                        <strong>Mechanics Note</strong>
-                        <div dangerouslySetInnerHTML={{ __html: data.mechanicNotes }} />
+                      <div className='pt-5 text-left'>
+                        <strong className="font-bold text-lg">Mechanics Note</strong>
+                        <div style={{ whiteSpace: 'pre-line' }} className='font-medium'>{data.mechanicNotes}</div>
                         {/* {data.mechanicNotes} */}
                       </div>
                       </td>
-                      <td>
-                      {data.agree && 
-                        <>
-                         <div className='pt-5'>
-                         <strong>Recommended Services</strong>
-                        <div dangerouslySetInnerHTML={{ __html: data.recommendedServices }} />
-                        {/* {data.mechanicNotes} */}
-                      </div>
-                        </>
-                      }
-                      </td>
+                
+                    </tr>
+                    <tr>
+                   {data.agree ?  (
+                     <td>
+                     {data.recommendedServices && 
+                       <>
+                        <div className='pt-5 text-left'>
+                        <strong className="font-bold text-lg">Recommended Services</strong>
+                       <div style={{ whiteSpace: 'pre-line' }} className='font-medium'>{ data.recommendedServices}</div>
+                       {/* {data.mechanicNotes} */}
+                     </div>
+                       </>
+                     }
+                     </td>
+                   ):''}
+                
                     </tr>
                     </tfoot>
                   </table>
@@ -252,63 +279,64 @@ const CreateInvoice = () => {
 
 
 
-          <div class="p-9">
-            <div class="flex flex-col mx-0 mt-8">
-              <table class="min-w-full divide-y divide-slate-500">
+          <div className="p-9">
+            <div className="flex flex-col mx-0 mt-8">
+              <table className="min-w-full divide-y divide-slate-500">
                 <thead>
                   <tr>
-                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0">
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-normal text-slate-700 sm:pl-6 md:pl-0">
                       Required Service/Repair Action
                     </th>
-                    <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell">
+                    <th scope="col" className="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell">
                       Labour Hours
                     </th>
-                    <th scope="col" class="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell">
+                    <th scope="col" className="hidden py-3.5 px-3 text-right text-sm font-normal text-slate-700 sm:table-cell">
                       Rate
                     </th>
-                    <th scope="col" class="py-3.5 pl-3 pr-4 text-right text-sm font-normal text-slate-700 sm:pr-6 md:pr-0">
+                    <th scope="col" className="py-3.5 pl-3 pr-4 text-right text-sm font-normal text-slate-700 sm:pr-6 md:pr-0">
                       Amount
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="border-b border-slate-200">
-                    <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
-                      {
-                        data.descriptions && data.descriptions.map((str, index) => (
-                          <p key={index}>{str}</p>
-                        ))
-                      }
-                    </td>
-                    <td class="hidden px-3 py-4 text-sm text-right sm:table-cell">
-                      <input
-                        type="number"
-                        min={0}
-                        className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        onChange={(e) => { handleSetHours(e.target.value) }}
-                      />
-                    </td>
-                    <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
-                      $125.00
-                    </td>
-                    <td class="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
-                      {/* TOTAL  */}
+                {
+                 order?.descriptions && order?.descriptions.map((description, index) => (
+                  <tr key={index} className="border-b border-slate-200">
+                  <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+                   {description.description}
+                  </td>
+                  <td className="hidden px-3 py-4 text-sm text-right sm:table-cell">
+                    <input
+                      type="number"
+                      min={0}
+                      className="w-1/4 p-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      onChange={(e)=>setHourForDescription(index,Number(e.target.value))}
+                    />
+                  </td>
+                  <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+                    $125.00
+                  </td>
+                  <td className="py-4 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                    {/* TOTAL  */}
 
-                      ${order.rate * order.hours}
-                    </td>
-                  </tr>
+                    ${description.rate * description.hour}
+                  </td>
+                </tr>
+                        ))
+                }
+             
                   {
                     repair && repair.map((item, index) => (
-                      <tr key={item.OEM_PART_ID} class="border-b border-slate-200">
-                        <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0 flex items-center gap-x-2">
+                      <tr key={item.OEM_PART_ID} className="border-b border-slate-200">
+                        <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0 flex items-center gap-x-2">
 
                           <span onClick={() => removeFromRepair(item.OEM_PART_ID)} className='text-md font-bold text-red-600 cursor-pointer'>X</span>
-                          <div class="font-medium text-slate-700">
+                          <div className="font-medium text-slate-700">
                             {item.OEM_PART_ID} - {item.OEM_PART_NAME}
                           </div>
 
                         </td>
-                        <td class="hidden px-3 py-4 text-sm text-right sm:table-cell">
+                        <td className="hidden px-3 py-4 text-sm text-right sm:table-cell">
                           Quantity : &nbsp;
                           <input
                             min={1}
@@ -319,19 +347,19 @@ const CreateInvoice = () => {
                             onChange={(e) => setQuantity(item.OEM_PART_ID, e.target.value)}
                           />
                         </td>
-                        <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+                        <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
                           ${item.OEM_LIST_PRICE}
                         </td>
-                        <td class="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
+                        <td className="hidden px-3 py-4 text-sm text-right text-slate-500 sm:table-cell">
                           ${parseFloat(item.OEM_LIST_PRICE * item.quantity).toFixed(2)}
                         </td>
 
                       </tr>
                     ))
                   }
-                  <tr class="border-b border-slate-200">
-                    <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
-                      <div class="font-medium text-slate-700 flex items-center gap-2">
+                  <tr className="border-b border-slate-200">
+                    <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+                      <div className="font-medium text-slate-700 flex items-center gap-2">
 
 
 
@@ -353,20 +381,20 @@ const CreateInvoice = () => {
                 <tfoot>
                   <tr>
                   
-                    <th scope="row" colSpan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                    <th scope="row" colSpan="3" className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
                       Subtotal
                     </th>
-                    <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                    <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
                       ${order.subTotal}
 
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row" colSpan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                    <th scope="row" colSpan="3" className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
                       Towing Charge
                     </th>
-                    <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                    <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
                       <input
                         type="number"
@@ -379,10 +407,10 @@ const CreateInvoice = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row" colSpan="3" class="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
+                    <th scope="row" colSpan="3" className="hidden pt-6 pl-6 pr-3 text-sm font-light text-right text-slate-500 sm:table-cell md:pl-0">
                       Discount
                     </th>
-                    <td class="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
+                    <td className="pt-6 pl-3 pr-4 text-sm text-right text-slate-500 sm:pr-6 md:pr-0">
 
                       <input
                         type="number"
@@ -395,11 +423,11 @@ const CreateInvoice = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row" colSpan="3" class="hidden pt-4 pl-6 pr-3 text-sm font-normal text-right text-slate-700 sm:table-cell md:pl-0">
+                    <th scope="row" colSpan="3" className="hidden pt-4 pl-6 pr-3 text-sm font-normal text-right text-slate-700 sm:table-cell md:pl-0">
                       Total
                     </th>
 
-                    <td class="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
+                    <td className="pt-4 pl-3 pr-4 text-sm font-normal text-right text-slate-700 sm:pr-6 md:pr-0">
                       ${order.total}
                     </td>
                   </tr>
@@ -409,7 +437,7 @@ const CreateInvoice = () => {
           </div>
 
           <div className='flex justify-end items-end px-7'>
-            <button onClick={createInvoice} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
+            <button onClick={createInvoice} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" >
               Submit Invoice
             </button>
 
@@ -417,9 +445,9 @@ const CreateInvoice = () => {
 
 
 
-          <div class="mt-48 p-9">
-            <div class="border-t pt-9 border-slate-200">
-              <div class="text-sm font-light text-slate-700">
+          <div className="mt-48 p-9">
+            <div className="border-t pt-9 border-slate-200">
+              <div className="text-sm font-light text-slate-700">
                 <p>
                   Display a message
                 </p>
@@ -428,6 +456,8 @@ const CreateInvoice = () => {
           </div>
         </div>
       </article>
+      <Help link="#"/>
+
     </div>
 
   );

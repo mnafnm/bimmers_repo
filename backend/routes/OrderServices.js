@@ -4,6 +4,24 @@ const pool = require('../config/db.js');
 
 
 
+
+// update Repair order data in orders table
+orderServicesAPI.patch('/repair-order/:id', async (req, res) => {
+    pool.getConnection((err,conn) => {
+        if(conn)
+        {
+            const order_ID = req.params.id;
+            const { agree, mechanicNotes, recommendedServices } = req.body;
+            const orderQuery = `UPDATE orders SET agree = ?, mechanicNotes = ?, recommendedServices = ? WHERE order_ID = ?;`
+            conn.query(orderQuery,[agree, mechanicNotes, recommendedServices, order_ID],  (error, results)=>{
+                if (error) throw error;
+                res.json(results)
+            }
+            )
+        }
+        conn.release()
+    });
+});
 // get order details by id from orders table
 orderServicesAPI.get('/orders/:id', async (req, res) => {
 
@@ -15,6 +33,11 @@ orderServicesAPI.get('/orders/:id', async (req, res) => {
             const orderQuery = `SELECT *,v.MODEL, v.COLOR, v.MAKE, v.PRODUCTION_DATE, v.LICENSE_PLATE, v.VIN FROM orders INNER JOIN customers ON orders.CUSTOMER_ID = customers.CUSTOMER_ID, vehicle_info v WHERE orders.CUSTOMER_ID = v.CUSTOMER_ID AND orders.order_ID = ?;`
             conn.query(orderQuery,[order_ID],  (error, results)=>{
                 if (error) throw error;
+
+                // make the repair_items and required_services as JSON object
+                results[0].repair_items = JSON.parse(results[0].repair_items)
+                results[0].required_services = JSON.parse(results[0].required_services)
+
                 res.json(results)
             }
             )
@@ -32,8 +55,8 @@ orderServicesAPI.patch('/orders/:id', async (req, res) => {
             // update only some fields of order details by id from orders table
             const order_ID = req.params.id;
             const { hour, rate, subtotal, discount, total, required_services, repair_items, towing_charge} = req.body;
-            const orderQuery = `UPDATE orders SET hour = ?, rate = ?, subtotal = ?, discount = ?, total = ?, repair_items = ?, towing_charge = ? WHERE order_ID = ?;`
-            conn.query(orderQuery,[hour, rate, subtotal, discount, total, JSON.stringify(repair_items),towing_charge, order_ID],  (error, results)=>{
+            const orderQuery = `UPDATE orders SET hour = ?, rate = ?, subtotal = ?, discount = ?, total = ?, repair_items = ?, required_services = ?, towing_charge = ? WHERE order_ID = ?;`
+            conn.query(orderQuery,[hour, rate, subtotal, discount, total, JSON.stringify(repair_items), JSON.stringify(required_services), towing_charge, order_ID],  (error, results)=>{
                 if (error) throw error;
                 res.json(results)
             }
@@ -82,6 +105,7 @@ orderServicesAPI.post('/createOrder', async (req, res) => {
                 subtotal: r.subTotal,
                 discount: r.discount,
                 total: r.total,
+                agree:r.agree,
                 required_services: JSON.stringify(r.required_services),
                 repair_items: JSON.stringify(r.repair_items),
                 order_date: mysqlFormattedDate
@@ -91,7 +115,7 @@ orderServicesAPI.post('/createOrder', async (req, res) => {
            
             const orderArray = Object.keys(order).map(key => order[key]);
           
-            var orderQuery = `INSERT INTO orders (towing_charge,mechanicNotes,recommendedServices,invoice_number, CUSTOMER_ID, hour, rate, subtotal, discount, total, required_services, repair_items, order_date) VALUES (?);`
+            var orderQuery = `INSERT INTO orders (towing_charge,mechanicNotes,recommendedServices,invoice_number, CUSTOMER_ID, hour, rate, subtotal, discount, total, agree, required_services, repair_items, order_date) VALUES (?);`
 
             conn.query(orderQuery,[orderArray], (error, results)=>{
                 if (error) throw error ;
