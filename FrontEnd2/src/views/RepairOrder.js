@@ -118,7 +118,7 @@ const RepairOrder = () => {
                                                 <th scope="col" className=" px-6 py-4">Year</th>
                                                 <th scope="col" className=" px-6 py-4">Make</th>
                                                 <th scope="col" className=" px-6 py-4">Model</th>
-                                                <th scope="col" className=" px-6 py-4">Licence</th>
+                                                <th scope="col" className=" px-6 py-4">License</th>
                                                 <th scope="col" className=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
@@ -164,7 +164,7 @@ const RepairOrder = () => {
                                         <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setMechanicNotes(e.target.value)} />
                                     </div>
                                     <div className='flex flex-col gap-3 text-md font-normal text-slate-700'>
-                                        <div className='text-slate-800 flex gap-2 items-center'>Recommended services:  <input ref={agreeRef} type="checkbox" name="agree" id="agree" /> <label htmlFor="agree">I agree</label> </div>
+                                        <div className='text-slate-800 flex gap-2 items-center'>Recommended services:  <input ref={agreeRef} type="checkbox" name="agree" id="agree" /> <label htmlFor="agree">Accepted</label> </div>
                                         <textarea className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setRecommendedServices(e.target.value)} />
                                         
                                     </div>

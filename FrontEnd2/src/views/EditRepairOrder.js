@@ -139,7 +139,7 @@ const EditRepairOrder = () => {
                                                 <th scope="col" className=" px-6 py-4">Year</th>
                                                 <th scope="col" className=" px-6 py-4">Make</th>
                                                 <th scope="col" className=" px-6 py-4">Model</th>
-                                                <th scope="col" className=" px-6 py-4">Licence</th>
+                                                <th scope="col" className=" px-6 py-4">License</th>
                                                 <th scope="col" className=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
@@ -192,7 +192,7 @@ const EditRepairOrder = () => {
                                         type="checkbox" name="agree" id="agree" checked={data.agree} onChange={()=>{setData({
                                             ...data,
                                             agree: !data.agree
-                                        })}} /> <label htmlFor="agree">I agree</label> </div>
+                                        })}} /> <label htmlFor="agree">Accepted</label> </div>
                                         <textarea value={data?.recommendedServices} className='border rounded focus:border-blue-500 p-2' cols={50} rows={8} onChange={(e)=>setData({
                                             ...data,
                                             recommendedServices: e.target.value

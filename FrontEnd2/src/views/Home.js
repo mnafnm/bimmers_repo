@@ -305,20 +305,6 @@ export default function App() {
           textAlign: "right",
         }}
       >
-        <button
-          style={{
-            padding: 10,
-            borderRadius: 8,
-            backgroundColor: "grey",
-            color: "white",
-          }}
-          onClick={() => {
-            window.location.reload();
-            clearEventsFromDB();
-          }}
-        >
-          Clear All Calendar Data
-        </button>
       </div>
 
       <Help link="https://drive.google.com/file/d/1M2L-TiC87MWXwcCgK8VnVQ8NMVQ6p_sO/view?usp=drive_link" />

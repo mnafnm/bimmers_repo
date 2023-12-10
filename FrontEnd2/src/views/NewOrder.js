@@ -126,7 +126,7 @@ const NewOrder = () => {
                                                 <th scope="col" className=" px-6 py-4">Year</th>
                                                 <th scope="col" className=" px-6 py-4">Make</th>
                                                 <th scope="col" className=" px-6 py-4">Model</th>
-                                                <th scope="col" className=" px-6 py-4">Licence</th>
+                                                <th scope="col" className=" px-6 py-4">License</th>
                                                 <th scope="col" className=" px-6 py-4">Vin</th>
                                             </tr>
                                         </thead>
